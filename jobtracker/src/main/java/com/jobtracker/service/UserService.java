@@ -21,20 +21,12 @@ public class UserService {
     }
 
     public String addUser(String email, String password) {
-        // hash password
         String hashedPassword = passwordEncoder.encode(password);
-        
-        // create a new user object
-        User user = new User();
-        user.setEmail(email);
-        user.setPassword(hashedPassword);
-
-        // save to database
-        userRepository.save(user);
+        userRepository.addUser(email, hashedPassword);
         return "User saved";
     }
 
     public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.listAllUsers();
     }
 }
