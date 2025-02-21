@@ -1,58 +1,54 @@
+import { useEffect, useState } from "react";
+import { ApplicationsList } from "./features/jobs/JobList";
+import { AppSidebar } from "@/components/app-sidebar";
+import Layout from "@/app/layout"
+import { SidebarHeader, SidebarTrigger, } from "@/components/ui/sidebar"
+import Page from "@/app/dashboard/page";
+import { SidebarProvider } from "@/components/ui/sidebar";
+interface User {
+  userId: string;
+  email: string;
+  createdAt: string;
+}
 
-function AboutPage() {
+const UserList = () => {
+
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/users/all")
+    .then((response) => response.json())
+    .then((data) => {
+        setUsers(data);
+        setLoading(false);
+
+      })
+      .catch((error) => console.error("Error fetching users: ", error));
+  }, []); // empty dependency array, means the effect only runs once when the component mounts
+
+  if (loading) return <p>Loading...</p>;
+
   return (
-    <>
-      <div className="mx-auto max-w-sm text-center bg-gray-700 rounded-xl border-gray outline">
-        <h1 className="text-3xl text-gray-200">About</h1>
-        <p className="text-gray-200">Hello there</p>
-      </div>
-    </>
+    <div className="mx-auto max-w-2xl p-2 bg-gray-600 rounded-xl ">
+      <h2>User List</h2>
+      <ul>
+        {users.map((users) => (
+          <li key={users.userId}>
+            {users.userId} -- {users.email} -- {users.createdAt}
+          </li>
+        ))}
+      </ul>
+    </div>
   )
-}
-
-
-function Button() {
-  return (
-    <button className="outline w-30 h-8 rounded-xl hover:bg-gray-700">Click here</button>
-  );
-}
-
-interface Dict {
-  id: number,
-  title: string;
-}
-
-const products: Dict[]  = [
-  { title: "Cabbage", id: 1 },
-  { title: "Garlic", id:2 },
-  { title: "Potato", id:3 },
-];
-
-for (let i: number = 0; i < products.length; i++) {
-  console.log(products[i])
-}
-
-function ListItems() {
-    let nums = products.map(product =>
-        <li
-          key={product.id}
-        >
-          {product.title}
-        </li>
-    )
-  return nums
 }
 
 function App() {
   return (
-    <>
-      <div>
-        <AboutPage/>
-        <Button/>
-        <ul>{ListItems()}</ul>
-      </div>
-    </>
-  )
+    <SidebarProvider>
+    <Page />
+    </SidebarProvider>
+  );
 }
 
-export default App
+export default App;
