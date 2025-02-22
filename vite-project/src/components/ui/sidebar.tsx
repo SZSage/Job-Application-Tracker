@@ -378,6 +378,27 @@ const SidebarFooter = React.forwardRef<
 })
 SidebarFooter.displayName = "SidebarFooter"
 
+const SidebarUser = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, children, ...props }, ref) => {
+
+  return (
+    <div
+      ref={ref}
+      data-sidebar="user"
+      className={cn(
+        "flex items-center gap-2 p-2 transition-all duration-300",
+        className
+      )}
+      {...props}
+    >
+      {children} {/* Allow the parent component to pass in content */}
+    </div>
+  );
+});
+SidebarUser.displayName = "SidebarUser";
+
 const SidebarSeparator = React.forwardRef<
   React.ElementRef<typeof Separator>,
   React.ComponentProps<typeof Separator>
@@ -419,7 +440,7 @@ const SidebarGroup = React.forwardRef<
     <div
       ref={ref}
       data-sidebar="group"
-      className={cn("relative flex w-full min-w-0 flex-col p-2", className)}
+      className={cn("relative flex w-full min-w-0 flex-col p-1", className)}
       {...props}
     />
   )
@@ -736,6 +757,7 @@ SidebarMenuSubButton.displayName = "SidebarMenuSubButton"
 export {
   Sidebar,
   SidebarContent,
+  SidebarUser,
   SidebarFooter,
   SidebarGroup,
   SidebarGroupAction,

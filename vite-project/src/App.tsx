@@ -5,6 +5,10 @@ import Layout from "@/app/layout"
 import { SidebarHeader, SidebarTrigger, } from "@/components/ui/sidebar"
 import Page from "@/app/dashboard/page";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { ThemeProvider } from "@/components/theme-provider"
+
+
+
 interface User {
   userId: string;
   email: string;
@@ -45,9 +49,11 @@ const UserList = () => {
 
 function App() {
   return (
-    <SidebarProvider>
-    <Page />
-    </SidebarProvider>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <SidebarProvider>
+      <Page />
+      </SidebarProvider>
+    </ThemeProvider>
   );
 }
 
