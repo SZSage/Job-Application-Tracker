@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <AppSidebar />
 
         {/* Main Content */}
-        <main className="flex-1 transition-all duration-200 ease-in-out">
+        <main className="flex-1 transition-all duration-300 ease-in-out">
           {children}
         </main>
       </div>

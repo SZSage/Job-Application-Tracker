@@ -20,7 +20,7 @@ export default function Page() {
         }`}
       >
         {/* Page header resize when sidebar is collapsed */}
-        <header className="sticky top-0 flex h-16 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-background border-b border-border p-4">
+        <header className="sticky top-0 z-1000 flex h-16 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-background border-b border-border p-4 bg-background/50 backdrop-blur-lg">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4 border-border" />
           <h1 className="text-lg font-semibold">Dashboard</h1>
@@ -31,7 +31,7 @@ export default function Page() {
 
         <div className="p-4">
           <p>Main Content Goes Here</p>
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-1">
             <div className="aspect-video rounded-xl bg-accent" />
             <div className="aspect-video rounded-xl bg-accent" />
             <div className="aspect-video rounded-xl bg-accent" />

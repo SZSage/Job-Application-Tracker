@@ -1,10 +1,11 @@
-import { Sidebar, SidebarTrigger, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { Settings, LayoutDashboardIcon, User2 } from "lucide-react";
+import { Sidebar, SidebarHeader,SidebarRail, SidebarTrigger, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
+import { Settings, LayoutDashboardIcon, User2, FileUser } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 
 const items = [
   { title: "Dashboard", url: "#", icon: LayoutDashboardIcon },
+  { title: "Applications", url: "#", icon: FileUser },
   { title: "Settings", url: "#", icon: Settings },
 ];
 
@@ -20,36 +21,17 @@ export function AppSidebar() {
         state === "collapsed" ? "w-[4rem]" : "w-[16rem]"
       }`}
     >
-      <SidebarContent className="p-4">
+      <SidebarContent className="p-2 pt-0">
         <SidebarGroup>
-          {/* Use SidebarMenuItem for User to match animations */}
-          <SidebarMenu>
-        {/* Page header resize when sidebar is collapsed */}
-        <header className="sticky top-0 flex h-16 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-backgroundp-4">
-            <SidebarMenuItem key="user">
-              <SidebarMenuButton asChild>
-                <button
-                  className={`flex items-center gap-2 transition-all ${
-                    activeItem === "User"
-                      ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-800"
-                  }`}
-                  onClick={() => setActiveItem("User")}
-                >
-                  <User2/>
-                  {/* Hide text when collapsed */}
-                  {state === "expanded" && <span>User</span>}
-                </button>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </header>
-          </SidebarMenu>
+          <SidebarHeader className="flex flex-row h-15 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+            <User2 className="size-5 shrink-0" />
+            {state === "expanded" && <span className="text-sm font-medium whitespace-nowrap">User</span>}
+          </SidebarHeader>
 
-          {/* Separator */}
           <Separator
             orientation="horizontal"
-            className={`h-0.5 border-border transition-all duration-300 ${
-              state === "collapsed" ? "min-w-8 mx-auto mb-4" : "w-full"
+            className={` transition-all duration-300 mx-2 ${
+              state === "collapsed" ? "w-10 mx-auto" : "w-full"
             }`}
           />
 
@@ -78,6 +60,7 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 }
