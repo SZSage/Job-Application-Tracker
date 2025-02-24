@@ -1,31 +1,57 @@
-import { Sidebar, SidebarHeader,SidebarRail, SidebarTrigger, SidebarContent, SidebarGroup, SidebarGroupLabel, SidebarGroupContent, SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
 import { Settings, LayoutDashboardIcon, User2, FileUser } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarRail,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupLabel,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from "@/components/ui/sidebar";
+
+type SidebarProps = {
+  activePage: string;
+  setActivePage: (page: string) => void;
+};
 
 const items = [
-  { title: "Dashboard", url: "#", icon: LayoutDashboardIcon },
-  { title: "Applications", url: "#", icon: FileUser },
-  { title: "Settings", url: "#", icon: Settings },
+  { title: "Dashboard", icon: LayoutDashboardIcon },
+  { title: "Job Applications", icon: FileUser },
+  { title: "Settings", icon: Settings },
 ];
 
-export function AppSidebar() {
-  const { state } = useSidebar(); // Detect expanded/collapsed state
-  const [activeItem, setActiveItem] = useState("Dashboard");
+export function AppSidebar({
+  activePage,
+  setActivePage,
+  }: SidebarProps) {
+  const { state, toggleSidebar } = useSidebar(); // Detect expanded/collapsed state
 
   return (
     <Sidebar
       collapsible="icon"
       variant="sidebar"
       className={`transition-all duration-300 ease-in-out ${
-        state === "collapsed" ? "w-[4rem]" : "w-[16rem]"
+        state === "collapsed" ? "w-[3.5em]" : "w-[16rem]"
       }`}
     >
-      <SidebarContent className="p-2 pt-0">
+      <SidebarContent className="p-2 pt-0 bg-background/50 backdrop-blur-lg">
         <SidebarGroup>
-          <SidebarHeader className="flex flex-row h-15 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
+          <SidebarHeader
+            className="flex flex-row h-12 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-15"
+            onClick={toggleSidebar}
+            >
             <User2 className="size-5 shrink-0" />
-            {state === "expanded" && <span className="text-sm font-medium whitespace-nowrap">User</span>}
+            {state === "expanded" && (
+              <span className="text-sm font-medium whitespace-nowrap">
+                User
+              </span>
+            )}
           </SidebarHeader>
 
           <Separator
@@ -35,20 +61,21 @@ export function AppSidebar() {
             }`}
           />
 
-          <SidebarGroupLabel>Applications</SidebarGroupLabel>
+          <SidebarGroupLabel>Sidebar Options</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a
-                      href={item.url}
                       className={`flex items-center gap-2 transition-all ${
-                        activeItem === item.title
+                        activePage === item.title
                           ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
                           : "hover:bg-gray-100 dark:hover:bg-gray-800"
                       }`}
-                      onClick={() => setActiveItem(item.title)}
+                      onClick={() => {
+                        setActivePage(item.title);
+                      }}
                     >
                       <item.icon />
                       {state === "expanded" && <span>{item.title}</span>}
