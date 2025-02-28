@@ -3,65 +3,48 @@ import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { useTheme } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/mode-toggle"
+import { useState, useEffect } from "react";
+import { PageContent } from "@/app/dashboard/page-content"
 
 export default function Page() {
-  const { state } = useSidebar();
+  const { state, toggleSidebar } = useSidebar();
   const { theme } = useTheme();
 
+  // Initialize state from localStorage immediately
+  const [activePage, setActivePage] = useState(() => {
+    return localStorage.getItem("activePage") || "Dashboard";
+  });
+
+  // Update localStorage whenever activePage changes
+  useEffect(() => {
+      localStorage.setItem("activePage", activePage);
+  }, [activePage]);
+
   return (
-    <div className="flex h-screen flex-auto bg-background text-foreground transition-colors">
+    <div className="flex h-screen flex-auto bg-background border-b text-foreground transition-colors bg-background/50 backdrop-blur-lg">
       {/* Sidebar */}
-      <AppSidebar />
+      <AppSidebar activePage={activePage} setActivePage={setActivePage} />
 
       {/* Main Content */}
       <div
         className={`transition-all duration-300 flex-1 ${
-          state === "collapsed" ? "ml-[4rem]" : "ml-[16rem]"
+           state === "collapsed" ? "ml-[3.5rem]" : "ml-[16rem]"
         }`}
       >
         {/* Page header resize when sidebar is collapsed */}
-        <header className="sticky top-0 z-1000 flex h-16 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-background border-b border-border p-4 bg-background/50 backdrop-blur-lg">
-          <SidebarTrigger className="-ml-1" />
+        <header className="sticky top-0 z-1000 flex h-12 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16 bg-background border-b border-border p-4 bg-background/50 backdrop-blur-lg">
+          <button onClick={toggleSidebar} className="p-2">
+            <SidebarTrigger className="-ml-1" />
+          </button>
           <Separator orientation="vertical" className="mr-2 h-4 border-border" />
-          <h1 className="text-lg font-semibold">Dashboard</h1>
+          <h1 className="text-lg font-semibold">{activePage}</h1>
           <div className="ml-auto">
             <ModeToggle />
           </div>
         </header>
 
-        <div className="p-4">
-          <p>Main Content Goes Here</p>
-          <div className="grid auto-rows-min gap-4 md:grid-cols-1">
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-            <div className="aspect-video rounded-xl bg-accent" />
-          </div>
-        </div>
+        { /* Dynamic page content */}
+        <PageContent activePage={activePage} />
       </div>
     </div>
   );
