@@ -21,7 +21,7 @@ export default function Page() {
   }, [activePage]);
 
   return (
-    <div className="flex h-screen flex-auto bg-background border-b border-amber-50 text-foreground transition-colors bg-background/50 backdrop-blur-lg">
+    <div className="flex h-screen flex-auto bg-background border-b text-foreground transition-colors bg-background/50 backdrop-blur-lg">
       {/* Sidebar */}
       <AppSidebar activePage={activePage} setActivePage={setActivePage} />
 
