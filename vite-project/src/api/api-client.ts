@@ -1,6 +1,7 @@
 
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8080/jobApplications/api/";
 
+// A general API handler that checks for HTTP responses
 async function apiHandler(response: Response) {
   if (!response.ok) {
     const error = await response.json().catch(() => ({
