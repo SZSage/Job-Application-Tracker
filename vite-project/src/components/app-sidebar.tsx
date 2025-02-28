@@ -1,6 +1,5 @@
 import { Settings, LayoutDashboardIcon, User2, FileUser } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
-import { useState, useEffect } from "react";
 import {
   Sidebar,
   SidebarHeader,
@@ -40,10 +39,10 @@ export function AppSidebar({
         state === "collapsed" ? "w-[3.5em]" : "w-[16rem]"
       }`}
     >
-      <SidebarContent className="p-2 pt-0 bg-background/50 backdrop-blur-lg">
+      <SidebarContent className="p-2 pt-0 bg-transparent backdrop-blur-md">
         <SidebarGroup>
           <SidebarHeader
-            className="flex flex-row h-12 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-15"
+            className="flex flex-row h-12 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-15 bg-transparent"
             onClick={toggleSidebar}
             >
             <User2 className="size-5 shrink-0" />
