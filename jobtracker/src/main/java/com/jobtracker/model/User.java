@@ -7,8 +7,8 @@ public class User {
     private UUID userId;
     private String email;
     private String password;
-    private LocalDateTime createdAt = LocalDateTime.now(); // Match DEFAULT CURRENT_TIMESTAMP
- 
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     public User() {}
 
     // Constructor for inserting new user
@@ -18,10 +18,9 @@ public class User {
     }
 
     // Constructor for fetching user info
-    public User(UUID userId, String email, String password, LocalDateTime createdAt) {
+    public User(UUID userId, String email, LocalDateTime createdAt) {
         this.userId = userId;
         this.email = email;
-        this.password = password;
         this.createdAt = createdAt;
     }
 
@@ -51,5 +50,9 @@ public class User {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
