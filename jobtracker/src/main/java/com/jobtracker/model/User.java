@@ -1,6 +1,6 @@
 package com.jobtracker.model;
-import java.util.UUID;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class User {
     // Id and GeneratedValue sets up the primary key
@@ -8,20 +8,23 @@ public class User {
     private String email;
     private String password;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private String role;
 
     public User() {}
 
     // Constructor for inserting new user
-    public User(String email, String password) {
+    public User(String email, String password, String role) {
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     // Constructor for fetching user info
-    public User(UUID userId, String email, LocalDateTime createdAt) {
+    public User(UUID userId, String email, LocalDateTime createdAt, String role) {
         this.userId = userId;
         this.email = email;
         this.createdAt = createdAt;
+        this.role = "USER";
     }
 
     public UUID getUserId() {
@@ -34,6 +37,14 @@ public class User {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public void setEmail(String email) {

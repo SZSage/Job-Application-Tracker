@@ -1,19 +1,21 @@
 package com.jobtracker.dto;
-import java.util.UUID;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class UserDTO {
     private UUID userId;
     private String email;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private String role;
 
     public UserDTO() {}
 
     // constructor
-    public UserDTO(UUID userId, String email, LocalDateTime createdAt) {
+    public UserDTO(UUID userId, String email, LocalDateTime createdAt, String role) {
         this.userId = userId;
         this.email = email;
         this.createdAt = createdAt;
+        this.role = role;
     }
 
     public UUID getUserId() {
@@ -23,9 +25,13 @@ public class UserDTO {
     public String getUserEmail() {
         return email;
     }
-    
+
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public String getRole() {
+        return role;
     }
 
     public void setUserId(UUID userId) {
@@ -39,4 +45,9 @@ public class UserDTO {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 }
