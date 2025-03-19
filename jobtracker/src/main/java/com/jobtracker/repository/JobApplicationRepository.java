@@ -85,9 +85,9 @@ public class JobApplicationRepository {
         return jdbcTemplate.update(sql.toString(), params.toArray());
     }
 
-    public int removeApplication(UUID jobId) {
-        String sql = "DELETE FROM job_applications WHERE job_id = ?";
-        return jdbcTemplate.update(sql, jobId);
+    public int removeApplication(UUID jobId, UUID userId) {
+        String sql = "DELETE FROM job_applications WHERE job_id = ? AND user_id = ?";
+        return jdbcTemplate.update(sql, jobId, userId);
     }
 
 }
