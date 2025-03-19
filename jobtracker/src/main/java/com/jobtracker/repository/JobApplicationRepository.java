@@ -1,17 +1,23 @@
 package com.jobtracker.repository;
 
-import com.jobtracker.model.JobApplications;
-import org.springframework.stereotype.Repository;
-import org.springframework.jdbc.core.JdbcTemplate;
-import java.util.UUID;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+
+import com.jobtracker.model.JobApplications;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class JobApplicationRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
  
     public JobApplicationRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
     }
 
     public void addApplications(String jobTitle, String companyName, Integer salary, String location, Integer statusId, UUID userId) {
@@ -39,6 +45,7 @@ public class JobApplicationRepository {
         List<Object> params = new ArrayList<>();
         boolean hasUpdated = false;
 
+
         if (jobTitle != null) {
             sql.append("job_title = ?, ");
             params.add(jobTitle);
@@ -49,6 +56,7 @@ public class JobApplicationRepository {
             params.add(companyName);
             hasUpdated = true;
         }
+
         if (salary != null) {
             sql.append("salary = ?, ");
             params.add(salary);
@@ -77,9 +85,9 @@ public class JobApplicationRepository {
         return jdbcTemplate.update(sql.toString(), params.toArray());
     }
 
-    public int removeApplication(UUID jobId, UUID userId) {
-        String sql = "DELETE FROM job_applications WHERE job_id = ? AND user_id = ?";
-        return jdbcTemplate.update(sql, jobId, userId);
+    public int removeApplication(UUID jobId) {
+        String sql = "DELETE FROM job_applications WHERE job_id = ?";
+        return jdbcTemplate.update(sql, jobId);
     }
 
 }

@@ -3,13 +3,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jobtracker.model.JobApplications;
 import com.jobtracker.repository.JobApplicationRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 @Service
 public class JobApplicationService {
@@ -62,8 +63,6 @@ public class JobApplicationService {
         Integer salary = null;
         Integer statusId = null;
         UUID jobId = null;
-
-
         if (result.containsKey("jobTitle")) {
             jobTitle = result.get("jobTitle");
             System.out.println("jobTitle: " + jobTitle);
