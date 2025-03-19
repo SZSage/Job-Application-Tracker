@@ -1,13 +1,15 @@
 package com.jobtracker.service;
-import com.google.gson.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jobtracker.model.JobApplications;
 import com.jobtracker.repository.JobApplicationRepository;
-import org.springframework.stereotype.Service;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import java.util.UUID;
-import java.util.Map;
-import java.util.HashMap;
+import org.springframework.stereotype.Service;
 
 @Service
 public class JobApplicationService {
@@ -95,7 +97,7 @@ public class JobApplicationService {
         return null;
     }
 
-    public int deleteApplication(UUID jobId) {
+    public int deleteApplication(UUID jobId, UUID userId) {
         int result = jobApplicationRepository.removeApplication(jobId);
         return result;
     }
