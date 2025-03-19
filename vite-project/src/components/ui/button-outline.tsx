@@ -25,3 +25,4 @@ export function ButtonIcon() {
 export function SubmitButton() {
   return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">Submit</Button>
 }
+
