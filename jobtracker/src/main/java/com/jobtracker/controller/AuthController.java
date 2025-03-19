@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class AuthController {
 
   // #NOTE: This implementation will be used for connecting to frontend
   @PostMapping("/registers")
-  public ResponseEntity<?> userRegister(@Valid @RequestBody UserRegistrationDTO userRegisterDTO) {
+  public ResponseEntity<?> userRegister(@Valid @ModelAttribute("userRegistration") UserRegistrationDTO userRegisterDTO) {
     try {
       String result = userService.addUser(
         userRegisterDTO.getEmail(),
@@ -37,6 +38,7 @@ public class AuthController {
       return ResponseEntity.badRequest().body(e.getMessage());
     }
   }
+
   // #TODO: Login
 
   // #NOTE: This current implementation returns the register.html page for testing
@@ -44,6 +46,19 @@ public class AuthController {
   public String showRegisterPage(Model model) {
     model.addAttribute("userRegistration", new UserRegistrationDTO());
     return "register";
+  }
+
+  @PostMapping("/register")
+  public ResponseEntity<?> postUserRegister(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO, Model model) {
+    try {
+      String result = userService.addUser(
+                        userRegistrationDTO.getEmail(),
+                        userRegistrationDTO.getPassword());
+      return ResponseEntity.ok(result);
+    } catch (Exception e) {
+      model.addAttribute("Error", e.getMessage());
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 
   @GetMapping("/login")

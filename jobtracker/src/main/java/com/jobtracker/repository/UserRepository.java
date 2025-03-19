@@ -1,9 +1,11 @@
 package com.jobtracker.repository;
 
-import org.springframework.stereotype.Repository;
-import com.jobtracker.model.User;
-import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
+
+import com.jobtracker.model.User;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepository {
@@ -13,22 +15,20 @@ public class UserRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // #TODO: retrieve user by ID
-    // #TODO: retrieve user by email
-
     public void addUser(String email, String hashedPassword) {
-        String sql = "INSERT INTO users (email, password) VALUES (?, ?)";
-        jdbcTemplate.update(sql, email, hashedPassword);
+        String role = "USER";
+        String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
+        jdbcTemplate.update(sql, email, hashedPassword, role);
     }
 
     public List<User> listAllUsers() {
         String sql = "SELECT * FROM users";
-        return jdbcTemplate.query(sql, (rs, rowNum) ->
+        return jdbcTemplate.query(sql, (resultSet, rowNum) ->
             new User(
-                rs.getObject("user_id", java.util.UUID.class),
-                rs.getString("email"),
-                rs.getString("password"),
-                rs.getTimestamp("created_at").toLocalDateTime()
+                resultSet.getObject("user_id", java.util.UUID.class),
+                resultSet.getString("email"),
+                resultSet.getTimestamp("created_at").toLocalDateTime(),
+                resultSet.getString("role")
             )
         );
     }
