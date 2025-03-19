@@ -6,8 +6,16 @@ export default {
         "./src/**/*.{js,ts,jsx,tsx}"
     ],
   theme: {
+    fontFamily: {
+        'roboto': ['Roboto Condensed', 'sans-serif']
+    },
   	extend: {
+        backgroundImage: {
+            'grid_pattern': "url('src/assets/grid-pattern.svg')",
+            'grid_patterns': "url('src/assets/grid2.svg')",
+        },
   		colors: {
+            button_background: '#2B3648',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			border: 'hsl(var(--border))',

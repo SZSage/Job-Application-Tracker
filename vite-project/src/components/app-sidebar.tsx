@@ -35,11 +35,11 @@ export function AppSidebar({
     <Sidebar
       collapsible="icon"
       variant="sidebar"
-      className={`transition-all duration-300 ease-in-out ${
+      className={`bg-transition-all duration-300 ease-out ${
         state === "collapsed" ? "w-[3.5em]" : "w-[16rem]"
       }`}
     >
-      <SidebarContent className="p-2 pt-0 bg-transparent backdrop-blur-md">
+      <SidebarContent className="p-2 pt-0 bg-sidebar/50 backdrop-blur-md">
         <SidebarGroup>
           <SidebarHeader
             className="flex flex-row h-12 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-15 bg-transparent"
@@ -55,8 +55,8 @@ export function AppSidebar({
 
           <Separator
             orientation="horizontal"
-            className={` transition-all duration-300 mx-2 ${
-              state === "collapsed" ? "w-10 mx-auto" : "w-full"
+            className={`mb-2 transition-all duration-300 ease-out ${
+              state === "collapsed" ? "w-8 mx-auto" : "w-full"
             }`}
           />
 
@@ -67,7 +67,7 @@ export function AppSidebar({
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <a
-                      className={`flex items-center gap-2 transition-all ${
+                      className={`flex items-center gap-2 transition-all${
                         activePage === item.title
                           ? "bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white"
                           : "hover:bg-gray-100 dark:hover:bg-gray-800"

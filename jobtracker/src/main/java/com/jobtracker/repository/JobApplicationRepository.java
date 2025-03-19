@@ -45,6 +45,7 @@ public class JobApplicationRepository {
         List<Object> params = new ArrayList<>();
         boolean hasUpdated = false;
 
+
         if (jobTitle != null) {
             sql.append("job_title = ?, ");
             params.add(jobTitle);

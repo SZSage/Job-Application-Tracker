@@ -11,6 +11,7 @@ import com.jobtracker.repository.JobApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class JobApplicationService {
 
@@ -98,7 +99,7 @@ public class JobApplicationService {
     }
 
     public int deleteApplication(UUID jobId, UUID userId) {
-        int result = jobApplicationRepository.removeApplication(jobId);
+        int result = jobApplicationRepository.removeApplication(jobId, userId);
         return result;
     }
 

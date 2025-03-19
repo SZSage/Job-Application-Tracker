@@ -10,16 +10,20 @@ export function ActiveButton() {
 }
 
 export function ExportCsvButton() {
-  return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">
-    Export CSV
-  </Button>
+  return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">Export CSV</Button>
 }
 
 export function ButtonIcon() {
-  return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">
-    <Plus />
+  return (
+    <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">
+      <Plus />
     Add Applications
   </Button>
+  )
+}
+
+export function SubmitButton() {
+  return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">Submit</Button>
 }
 
 export function SubmitButton() {

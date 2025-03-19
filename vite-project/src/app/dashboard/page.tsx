@@ -32,7 +32,7 @@ export default function Page() {
         }`}
       >
         {/* Page header resize when sidebar is collapsed */}
-        <header className="sticky top-0 z-1000 flex h-12 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16 border-b border-border p-4 bg-sidebar/20 backdrop-blur-xs">
+        <header className="sticky top-0 z-1000 flex h-12 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16 border-b border-border p-4 bg-sidebar/50 backdrop-blur-xs">
           <button onClick={toggleSidebar} className="p-2">
             <SidebarTrigger className="-ml-1" />
           </button>
