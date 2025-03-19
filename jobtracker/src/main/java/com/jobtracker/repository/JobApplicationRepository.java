@@ -34,9 +34,52 @@ public class JobApplicationRepository {
         );
     }
 
-    // TODO: Edit job application fields
+    public int updateApplications(String jobTitle, String companyName, Integer salary, String location, Integer statusId, UUID jobId) {
+        StringBuilder sql = new StringBuilder("UPDATE job_applications SET ");
+        List<Object> params = new ArrayList<>();
+        boolean hasUpdated = false;
 
-    // TODO: Delete job application
+        if (jobTitle != null) {
+            sql.append("job_title = ?, ");
+            params.add(jobTitle);
+            hasUpdated = true;
+        }
+        if (companyName != null) {
+            sql.append("company_name = ?, ");
+            params.add(companyName);
+            hasUpdated = true;
+        }
+        if (salary != null) {
+            sql.append("salary = ?, ");
+            params.add(salary);
+            hasUpdated = true;
+        }
+        if (location != null) {
+            sql.append("location = ?, ");
+            params.add(location);
+            hasUpdated = true;
+        }
+        if (statusId != null) {
+            sql.append("status_id = ?, ");
+            params.add(statusId);
+            hasUpdated = true;
+        }
 
+        if (!hasUpdated) {
+            return 0;
+        }
+        // Remove trailing comma and space
+        sql.setLength(sql.length() - 2);
+        
+        sql.append(" WHERE job_id = ?");
+        params.add(jobId);
+
+        return jdbcTemplate.update(sql.toString(), params.toArray());
+    }
+
+    public int removeApplication(UUID jobId, UUID userId) {
+        String sql = "DELETE FROM job_applications WHERE job_id = ? AND user_id = ?";
+        return jdbcTemplate.update(sql, jobId, userId);
+    }
 
 }
