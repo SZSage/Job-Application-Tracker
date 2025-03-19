@@ -44,7 +44,7 @@ export default function Register() {
               />
               {isSubmitted && errors.email && <p className="text-red-400 text-sm mt-1">{errors.email.message}</p>}
             </div>
-            
+
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-300">Password</label>
               <input type="password" {...register("password")}
