@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { List, Plus } from "lucide-react";
 import type { Applications } from "@/types/types";
 import { getApplications } from "@/api/applications-api";
+import { ActiveButton, ExportCsvButton,ButtonIcon } from "@/components/ui/button-outline";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
-  TableHeader,
   TableRow,
 } from "@/components/ui/table"
 
@@ -16,16 +14,14 @@ const ApplicationList = () => {
   const [applications, setApplications] = useState<Applications[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // call useEffect
   useEffect(() => {
     getApplications()
       .then(applications => setApplications(applications))
       .catch(error => console.error(error));
   }, []);
 
-  // return render
   return (
-    <div className="flex mt-4 border-1 bg-card rounded-lg">
+    <div className="flex text-muted-foreground mt-4 border-1 border-gray-700 shadow-2xl bg-gray-700/50 backdrop-blur-xs rounded-md">
       <Table>
         <TableBody>
           <TableRow>
@@ -37,13 +33,13 @@ const ApplicationList = () => {
           </TableRow>
 
           {applications.map((applications) => (
-              <TableRow key={applications.userId}>
-                <TableCell>{applications.jobTitle}</TableCell>
-                <TableCell>{applications.companyName}</TableCell>
-                <TableCell>{applications.location}</TableCell>
-                <TableCell>{applications.salary}</TableCell>
-                <TableCell>{applications.statusId}</TableCell>
-              </TableRow>
+            <TableRow key={applications.userId}>
+              <TableCell>{applications.jobTitle}</TableCell>
+              <TableCell>{applications.companyName}</TableCell>
+              <TableCell>{applications.location}</TableCell>
+              <TableCell>{applications.salary}</TableCell>
+              <TableCell>{applications.statusId}</TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </Table>
@@ -62,11 +58,11 @@ export function Header() {
 export function TabBar() {
   return (
     <div className="flex justify-between">
-      <div className="bg-blue-500/50 backdrop-blur-lg text-white px-1 py-1 rounded-lg flex items-center">Active
+      <ActiveButton />
+      <div className="flex gap-2">
+        <ExportCsvButton />
+        <ButtonIcon />
       </div>
-      <button className="bg-blue-500/50 backdrop-blur-lg text-white px-1 py-1 rounded-lg flex items-center">
-          <Plus/>
-      </button>
     </div>
   )
 }

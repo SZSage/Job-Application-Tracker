@@ -3,15 +3,21 @@ package com.jobtracker.repository;
 import com.jobtracker.model.JobApplications;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
 import java.util.UUID;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class JobApplicationRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
  
     public JobApplicationRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate);
     }
 
     public void addApplications(String jobTitle, String companyName, Integer salary, String location, Integer statusId, UUID userId) {
@@ -34,9 +40,53 @@ public class JobApplicationRepository {
         );
     }
 
-    // TODO: Edit job application fields
+    public int updateApplications(String jobTitle, String companyName, Integer salary, String location, Integer statusId, UUID jobId) {
+        StringBuilder sql = new StringBuilder("UPDATE job_applications SET ");
+        List<Object> params = new ArrayList<>();
+        boolean hasUpdated = false;
 
-    // TODO: Delete job application
+        if (jobTitle != null) {
+            sql.append("job_title = ?, ");
+            params.add(jobTitle);
+            hasUpdated = true;
+        }
+        if (companyName != null) {
+            sql.append("company_name = ?, ");
+            params.add(companyName);
+            hasUpdated = true;
+        }
 
+        if (salary != null) {
+            sql.append("salary = ?, ");
+            params.add(salary);
+            hasUpdated = true;
+        }
+        if (location != null) {
+            sql.append("location = ?, ");
+            params.add(location);
+            hasUpdated = true;
+        }
+        if (statusId != null) {
+            sql.append("status_id = ?, ");
+            params.add(statusId);
+            hasUpdated = true;
+        }
+
+        if (!hasUpdated) {
+            return 0;
+        }
+        // Remove trailing comma and space
+        sql.setLength(sql.length() - 2);
+        
+        sql.append(" WHERE job_id = ?");
+        params.add(jobId);
+
+        return jdbcTemplate.update(sql.toString(), params.toArray());
+    }
+
+    public int removeApplication(UUID jobId) {
+        String sql = "DELETE FROM job_applications WHERE job_id = ?";
+        return jdbcTemplate.update(sql, jobId);
+    }
 
 }
