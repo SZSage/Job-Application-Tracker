@@ -5,6 +5,22 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JobApp</title>
+    <script>
+      (function() {
+        try {
+          const storedTheme = localStorage.getItem("vite-ui-theme");
+          const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+          
+          // Apply theme class before anything renders
+          if (storedTheme === "dark" || (storedTheme !== "light" && prefersDark)) {
+            document.documentElement.classList.add("dark");
+            document.documentElement.style.backgroundColor = "#1a1a1a";
+          }
+        } catch (e) {
+          console.error("Theme initialization error:", e);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
