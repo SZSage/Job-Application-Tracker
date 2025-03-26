@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jobtracker.dto.UserRegistrationDTO;
+import com.jobtracker.model.User;
 import com.jobtracker.service.UserService;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,10 +34,13 @@ public class UserController {
 
   @PostMapping("/register")
   public ResponseEntity<?> addNewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+    User createdUser = userService.addUser(userRegistrationDTO);
     // convert domain object for DTO
-    userService.addUser(userRegistrationDTO);
-    Map<String, String> response = new HashMap<>();
-    response.put("message", "User registered successfully");
+    Map<String, Object> response = new HashMap<>();
+    response.put("userId", createdUser.getUserId());
+    response.put("email", createdUser.getEmail());
+    response.put("role", "USER");
+    response.put("created_at", createdUser.getCreatedAt());
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
