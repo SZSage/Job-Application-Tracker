@@ -56,6 +56,8 @@ public class UserDaoImpl implements UserDao {
     ));
   }
 
-  // #TODO: selectAllUsers
-  // #TODO: deleteUserById
+  public int deleteUserById(UUID userId) {
+    String sql = "DELETE FROM users WHERE user_id = ?";
+    return jdbcTemplate.update(sql, userId);
+  }
 }

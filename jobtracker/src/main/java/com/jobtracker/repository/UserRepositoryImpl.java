@@ -1,6 +1,7 @@
 package com.jobtracker.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.jobtracker.dao.UserDao;
 import com.jobtracker.model.User;
@@ -25,6 +26,10 @@ public class UserRepositoryImpl implements UserRepository {
   public List<User> fetchAllUsers() {
     List<User> userInfo = userDao.getAllUsers();
     return userInfo;
+  }
+
+  public int removeUser(UUID userId) {
+    return userDao.deleteUserById(userId);
   }
 
   // TODO: updateUser

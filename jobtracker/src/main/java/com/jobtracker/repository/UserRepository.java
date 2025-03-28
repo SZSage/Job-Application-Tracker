@@ -1,6 +1,7 @@
 package com.jobtracker.repository;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.jobtracker.model.User;
 
@@ -8,10 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
-  // addUser
   User addUser(User user);
   List<User> fetchAllUsers();
+  int removeUser(UUID userId);
   // getUser
   // updateUser
-  // removeUser
 }
