@@ -9,4 +9,5 @@ import com.jobtracker.model.User;
 public interface UserDao {
   User createUser(String email, String hashedPassword, UUID userId);
   List<User> getAllUsers();
+  int deleteUserById(UUID userId);
 }

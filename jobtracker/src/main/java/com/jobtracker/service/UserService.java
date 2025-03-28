@@ -1,6 +1,7 @@
 package com.jobtracker.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.jobtracker.dto.UserRegistrationDTO;
 import com.jobtracker.model.User;
@@ -38,8 +39,12 @@ public class UserService {
     return userRepository.addUser(newUser);
   }
 
-  public List<User> getUsers() {
+  public List<User> getAllUsers() {
     return userRepository.fetchAllUsers();
+  }
+
+  public int deleteUser(UUID userId) {
+    return userRepository.removeUser(userId);
   }
 
   // validate DTO
