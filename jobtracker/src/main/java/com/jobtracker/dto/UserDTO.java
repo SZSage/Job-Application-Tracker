@@ -3,6 +3,8 @@ package com.jobtracker.dto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.jobtracker.model.User;
+
 public class UserDTO {
   private UUID userId;
   private String email;
@@ -17,6 +19,18 @@ public class UserDTO {
     this.email = email;
     this.createdAt = createdAt;
     this.role = role;
+  }
+
+  public UserDTO(User user) {}
+
+  // UserDTO mapper method
+  public static UserDTO fromUser(User user) {
+    UserDTO userDTO = new UserDTO();
+    userDTO.setUserId(user.getUserId());
+    userDTO.setUserEmail(user.getEmail());
+    userDTO.setCreatedAt(user.getCreatedAt());
+    userDTO.setRole(user.getRole());
+    return userDTO;
   }
 
   public UUID getUserId() {

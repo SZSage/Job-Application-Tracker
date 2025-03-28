@@ -1,5 +1,7 @@
 package com.jobtracker.repository;
 
+import java.util.List;
+
 import com.jobtracker.dao.UserDaoImpl;
 import com.jobtracker.model.User;
 
@@ -14,12 +16,16 @@ public class UserRepositoryImpl implements UserRepository {
   public UserRepositoryImpl(UserDaoImpl userDaoImpl) {
     this.userDaoImpl = userDaoImpl;
   }
+
   public User addUser(User user) {
     User userInfo = userDaoImpl.createUser(user.getEmail(), user.getPassword(), user.getUserId());
     return userInfo;
   }
 
-  // TODO: getUser
+  public List<User> fetchAllUsers() {
+    List<User> userInfo = userDaoImpl.getAllUsers();
+    return userInfo;
+  }
   // TODO: updateUser
   // TODO: removeUser
 }

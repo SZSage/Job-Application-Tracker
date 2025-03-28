@@ -1,5 +1,6 @@
 package com.jobtracker.dao;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.sql.DataSource;
@@ -28,24 +29,33 @@ public class UserDaoImpl implements UserDao {
    * Delete: boolean
    * */
 
-public User createUser(String email, String hashedPassword, UUID userId) {
-  String role = "USER";
-  String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?) RETURNING user_id, email, created_at, role";
+  public User createUser(String email, String hashedPassword, UUID userId) {
+    String role = "USER";
+    String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?) RETURNING user_id, email, created_at, role";
 
-  // queryForObject to both insert and return data
-  return jdbcTemplate.queryForObject(sql,
-    (resultSet, rowNum) -> new User(
-      resultSet.getObject("user_id", java.util.UUID.class),
-      resultSet.getString("email"),
-      resultSet.getTimestamp("created_at").toLocalDateTime(),
-      resultSet.getString("role")
-    ),
-    email, hashedPassword, role
-  );
-}
+    // queryForObject to both insert and return data
+    return jdbcTemplate.queryForObject(sql,
+      (resultSet, rowNum) -> new User(
+        resultSet.getObject("user_id", java.util.UUID.class),
+        resultSet.getString("email"),
+        resultSet.getTimestamp("created_at").toLocalDateTime(),
+        resultSet.getString("role")
+      ),
+      email, hashedPassword, role
+    );
+  }
 
+  public List<User> getAllUsers() {
+    String sql = "SELECT * FROM users";
+    return jdbcTemplate.query(sql,
+    (resultSet, rowMapper) -> new User(
+        resultSet.getObject("user_id", java.util.UUID.class),
+        resultSet.getString("email"),
+        resultSet.getTimestamp("created_at").toLocalDateTime(),
+        resultSet.getString("role")
+    ));
+  }
 
-  // #TOOD: getUserByIdWithPassword
   // #TODO: selectAllUsers
   // #TODO: deleteUserById
 }
