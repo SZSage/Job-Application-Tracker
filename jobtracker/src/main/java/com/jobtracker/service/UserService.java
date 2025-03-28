@@ -1,5 +1,7 @@
 package com.jobtracker.service;
 
+import java.util.List;
+
 import com.jobtracker.dto.UserRegistrationDTO;
 import com.jobtracker.model.User;
 import com.jobtracker.repository.UserRepository;
@@ -36,6 +38,9 @@ public class UserService {
     return userRepository.addUser(newUser);
   }
 
+  public List<User> getUsers() {
+    return userRepository.fetchAllUsers();
+  }
 
   // validate DTO
   // convert DTO to user entity

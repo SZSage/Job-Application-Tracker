@@ -1,8 +1,11 @@
 package com.jobtracker.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
+import com.jobtracker.dto.UserDTO;
 import com.jobtracker.dto.UserRegistrationDTO;
 import com.jobtracker.model.User;
 import com.jobtracker.service.UserService;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,4 +48,14 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
+  @GetMapping("/getUsers")
+  public ResponseEntity<?> listAllUsers() {
+    // Get Domain object from serivce that will be converted to a list of UserDTOs
+    Stream<User> userStream = userService.getUsers().stream();
+    List<UserDTO> userDtoList = userStream.map(user -> UserDTO.fromUser(user)).toList();
+    return ResponseEntity.ok(userDtoList);
+  }
+
+  // TODO: Update User
+  // TODO: Remove user
 }
