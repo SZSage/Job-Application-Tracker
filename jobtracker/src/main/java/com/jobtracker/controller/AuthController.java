@@ -1,7 +1,7 @@
 package com.jobtracker.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 import com.jobtracker.dto.UserRegistrationDTO;
 import com.jobtracker.model.User;
@@ -30,20 +30,26 @@ public class AuthController {
   @PostMapping("/register")
   public ResponseEntity<?> addNewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
     User createdUser = userService.addUser(userRegistrationDTO);
-    // convert domain object for DTO
-    Map<String, Object> response = new HashMap<>();
-    response.put("userId", createdUser.getUserId());
-    response.put("email", createdUser.getEmail());
-    response.put("role", "USER");
-    response.put("created_at", createdUser.getCreatedAt());
-    return ResponseEntity.status(HttpStatus.CREATED).body(response);
+
+    AuthResponse authResponse = new AuthResponse(
+      createdUser.getUserId(),
+      createdUser.getEmail(),
+      "USER",
+      createdUser.getCreatedAt()
+    );
+
+    return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
   }
 
   @PostMapping("/login")
   public void userLogin(@RequestBody LoginRequest loginRequest) {
+    // should return JWT token
+    // user Info
+    // success/failure
   }
 
-  public record LoginRequest(String email, String password) {
-  }
+  public record LoginRequest(String email, String password) {}
+
+  public record AuthResponse(UUID userId, String email, String role, LocalDateTime createdAt) {}
 
 }
