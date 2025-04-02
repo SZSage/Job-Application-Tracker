@@ -1,16 +1,24 @@
 package com.jobtracker.controller;
 
-import com.jobtracker.dto.UserLoginDTO;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.jobtracker.dto.UserRegistrationDTO;
+import com.jobtracker.model.User;
 import com.jobtracker.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path="/api/auths")
+@RequestMapping(path="/api/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
   private final UserService userService;
 
@@ -19,24 +27,23 @@ public class AuthController {
     this.userService = userService;
   }
 
-  /*
-  @PostMapping("/registers")
-  public ResponseEntity<?> postUserRegister(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO, Model model) {
-    try {
-      String result = userService.addUser(
-                        userRegistrationDTO.getEmail(),
-                        userRegistrationDTO.getPassword());
-      return ResponseEntity.ok(result);
-    } catch (Exception e) {
-      model.addAttribute("Error", e.getMessage());
-      return ResponseEntity.badRequest().body(e.getMessage());
-    }
+  @PostMapping("/register")
+  public ResponseEntity<?> addNewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+    User createdUser = userService.addUser(userRegistrationDTO);
+    // convert domain object for DTO
+    Map<String, Object> response = new HashMap<>();
+    response.put("userId", createdUser.getUserId());
+    response.put("email", createdUser.getEmail());
+    response.put("role", "USER");
+    response.put("created_at", createdUser.getCreatedAt());
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
-  */
   @PostMapping("/login")
-  public String showLoginPage(Model model) {
-    model.addAttribute("userLogin", new UserLoginDTO());
-    return "login";
+  public void userLogin(@RequestBody LoginRequest loginRequest) {
   }
+
+  public record LoginRequest(String email, String password) {
+  }
+
 }
