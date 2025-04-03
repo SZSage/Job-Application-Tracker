@@ -29,6 +29,7 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<?> addNewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
+
     User createdUser = userService.addUser(userRegistrationDTO);
 
     AuthResponse authResponse = new AuthResponse(
@@ -42,10 +43,24 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public void userLogin(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest) {
     // should return JWT token
     // user Info
     // success/failure
+    User checkLogin = userService.userLogin(loginRequest.email, loginRequest.password);
+
+    if (checkLogin == null) {
+      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account not found");
+    }
+
+    AuthResponse authResponse = new AuthResponse(
+      checkLogin.getUserId(),
+      checkLogin.getEmail(),
+      "USER",
+      checkLogin.getCreatedAt()
+    );
+
+    return ResponseEntity.status(HttpStatus.ACCEPTED).body(authResponse);
   }
 
   public record LoginRequest(String email, String password) {}

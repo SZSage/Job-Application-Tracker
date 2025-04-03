@@ -12,6 +12,7 @@ public interface UserRepository {
   User addUser(User user);
   List<User> fetchAllUsers();
   int removeUser(UUID userId);
+  User checkLogin(String email);
   // getUser
   // updateUser
 }

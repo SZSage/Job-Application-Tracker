@@ -10,7 +10,6 @@ import com.jobtracker.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +24,7 @@ public class UserService {
   @Autowired
   public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
     this.userRepository = userRepository;
-    this.passwordEncoder = new BCryptPasswordEncoder(16);
+    this.passwordEncoder = passwordEncoder;
   }
 
   public User addUser(UserRegistrationDTO userRegistrationDto) {
@@ -47,8 +46,20 @@ public class UserService {
     return userRepository.removeUser(userId);
   }
 
-  // validate DTO
-  // convert DTO to user entity
-  // save entity via repository
-  // Generate JWT
+  public User userLogin(String email, String rawPassword) {
+    if (email == null || rawPassword == null) {
+      return null;
+    }
+
+    User user = userRepository.checkLogin(email);
+    if (user == null) {
+      return null;
+    }
+
+    if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+      return null;
+    }
+    return user;
+  }
 }
+

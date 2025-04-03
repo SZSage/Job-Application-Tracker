@@ -30,9 +30,10 @@ public class User {
   }
 
   // Constructor for fetching user info
-  public User(UUID userId, String email, LocalDateTime createdAt, String role) {
+  public User(UUID userId, String email, String password, LocalDateTime createdAt, String role) {
     this.userId = userId;
     this.email = email;
+    this.password = password;
     this.createdAt = createdAt;
     this.role = "USER";
   }
