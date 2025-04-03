@@ -1,7 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import  { SubmitButton } from "@/components/ui/button-outline"
+import { useNavigate } from "react-router";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { registerUser } from "@/api/applications-api"
+import Login from "@/src/types/types"
 
 
 const schema = yup.object().shape({
@@ -27,7 +30,21 @@ export default function Register() {
     resolver: yupResolver(schema),
     mode: "onSubmit"
   });
-  const onSubmit: SubmitHandler<userForm> = (data) => console.log(data)
+  let navigate = useNavigate()
+  
+  const onSubmit: SubmitHandler<userForm> = (data: any) => {
+    console.log("Form submitted: ", data);
+
+    // api call here
+    registerUser(data)
+      .then(data => {
+        console.log("User registration info added: ", data)
+        navigate("/login")
+      })
+      .catch(error => {
+          console.log("User registration error: ", error)
+      })
+  }
 
   return (
     <div className="flex justify-center items-center min-h-screen p-4">
