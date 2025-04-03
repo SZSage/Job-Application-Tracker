@@ -32,5 +32,9 @@ public class UserRepositoryImpl implements UserRepository {
     return userDao.deleteUserById(userId);
   }
 
+  public User checkLogin(String email) {
+    return userDao.userLoginCheck(email);
+  }
+
   // TODO: updateUser
 }
