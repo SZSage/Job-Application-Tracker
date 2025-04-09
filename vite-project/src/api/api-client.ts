@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/jobApplications/api/auth";
+const API_URL = "http://localhost:8080/jobApplications/api/";
 
 const user_register_URL = "http://localhost:8080/api/auth/"
 
