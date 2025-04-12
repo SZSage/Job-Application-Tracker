@@ -25,8 +25,8 @@ public class JobApplicationRepository {
         jdbcTemplate.update(sql, jobTitle, companyName, salary, location, statusId, userId);
     }
 
-    public List<JobApplications> getApplications() {
-        String sql = "SELECT * FROM job_applications";
+    public List<JobApplications> getApplications(UUID userId) {
+        String sql = "SELECT * FROM job_applications WHERE user_id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) ->
             new JobApplications(
                 rs.getObject("job_id", java.util.UUID.class),
@@ -36,7 +36,7 @@ public class JobApplicationRepository {
                 rs.getString("location"),
                 rs.getInt("status_id"),
                 rs.getObject("user_id", java.util.UUID.class)
-            )
+            ), userId
         );
     }
 
