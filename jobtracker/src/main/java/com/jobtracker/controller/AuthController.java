@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.jobtracker.dto.UserRegistrationDTO;
+import com.jobtracker.dto.response.AuthenticationResponse;
 import com.jobtracker.model.User;
 import com.jobtracker.service.UserService;
 
@@ -20,51 +21,50 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(path="/api/auth")
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
-  private final UserService userService;
+    private final UserService userService;
 
-  @Autowired
-  public AuthController(UserService userService) {
-    this.userService = userService;
-  }
-
-  @PostMapping("/register")
-  public ResponseEntity<?> addNewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
-
-    User createdUser = userService.addUser(userRegistrationDTO);
-
-    AuthResponse authResponse = new AuthResponse(
-      createdUser.getUserId(),
-      createdUser.getEmail(),
-      "USER",
-      createdUser.getCreatedAt()
-    );
-
-    return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
-  }
-
-  @PostMapping("/login")
-  public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest) {
-    // should return JWT token
-    // user Info
-    // success/failure
-    User checkLogin = userService.userLogin(loginRequest.email, loginRequest.password);
-
-    if (checkLogin == null) {
-      return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account not found");
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
-    AuthResponse authResponse = new AuthResponse(
-      checkLogin.getUserId(),
-      checkLogin.getEmail(),
-      "USER",
-      checkLogin.getCreatedAt()
-    );
+    @PostMapping("/register")
+    public ResponseEntity<?> addNewUser(@RequestBody UserRegistrationDTO userRegistrationDTO) {
 
-    return ResponseEntity.status(HttpStatus.ACCEPTED).body(authResponse);
-  }
+        User createdUser = userService.addUser(userRegistrationDTO);
 
-  public record LoginRequest(String email, String password) {}
+        RegisterResponse authResponse = new RegisterResponse(
+            createdUser.getUserId(),
+            createdUser.getEmail(),
+            "USER",
+            createdUser.getCreatedAt()
+        );
 
-  public record AuthResponse(UUID userId, String email, String role, LocalDateTime createdAt) {}
+        return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> userLogin(@RequestBody LoginRequest loginRequest) {
+
+        AuthenticationResponse checkLogin = userService.userLogin(loginRequest.email, loginRequest.password);
+        if (checkLogin == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Account not found");
+        }
+
+        AuthResponse authResponse = new AuthResponse(
+            checkLogin.getUser().getUserId(),
+            checkLogin.getUser().getEmail(),
+            "USER",
+            checkLogin.getUser().getCreatedAt()
+        );
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(authResponse);
+    }
+
+    public record RegisterResponse(UUID userId, String email, String role, LocalDateTime createdAt) {}
+
+    public record LoginRequest(String email, String password) {}
+
+    public record AuthResponse(UUID userId, String email, String role, LocalDateTime createdAt) {}
 
 }

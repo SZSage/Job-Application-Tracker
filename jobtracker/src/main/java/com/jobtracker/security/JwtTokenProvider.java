@@ -1,6 +1,7 @@
 package com.jobtracker.security;
 
 import java.util.Date;
+import java.util.UUID;
 
 import jakarta.annotation.PostConstruct;
 
@@ -20,51 +21,66 @@ import io.jsonwebtoken.security.InvalidKeyException;
 
 @Component
 public class JwtTokenProvider {
-  private SecretKey secretKey;
-  private static final Logger logger = LogManager.getLogger(JwtTokenProvider.class);
+    private SecretKey secretKey;
+    private static final Logger logger = LogManager.getLogger(JwtTokenProvider.class);
 
+    @PostConstruct
+    public void init() {
+        this.secretKey = Jwts.SIG.HS256.key().build();
+        logger.info("JWT key initialized {}" + secretKey);
+    }
 
-  @PostConstruct
-  public void init() {
-    this.secretKey = Jwts.SIG.HS512.key().build();
-    logger.info("JWT key initialized {}" + secretKey);
-  }
-
-  public String generateJwtToken(Authentication authentication) {
+    public String generateJwtToken(Authentication authentication) {
     try {
-      String token = Jwts.builder()
-                         .subject(authentication.getName())
-                         .issuedAt(new Date())
-                         .expiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hour
-                         .signWith(secretKey)
-                         .compact();
-      return token;
+        String token =
+            Jwts.builder()
+                .subject(authentication.getName())
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + 3600000)) // 1 hour
+                .signWith(secretKey)
+                .compact();
+        return token;
     } catch (InvalidKeyException e) {
-      System.out.println("Inavlid Key for JWT signing: " + e.getMessage());
-      throw new SecurityException("Unable to generate token: Invalid signing key", e);
+        System.out.println("Inavlid Key for JWT signing: " + e.getMessage());
+        throw new SecurityException("Unable to generate token: Invalid signing key", e);
     } catch (JwtException e) {
-      System.out.println("Error generation JWT Token" + e.getMessage());
-      throw new RuntimeException("Failed to generate authentication token", e);
+        System.out.println("Error generation JWT Token" + e.getMessage());
+        throw new RuntimeException("Failed to generate authentication token", e);
     }
   }
 
-  public boolean validateJwtToken(String token) {
-
+    public String genJwtToken(UUID userId) {
     try {
-      Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
-      return true;
-    } catch (MalformedJwtException e) {
-      logger.error("Invalid JWT token: {}", e.getMessage());
-    } catch (ExpiredJwtException e) {
-      logger.error("JWT token has expired: {}", e.getMessage());
-    } catch (UnsupportedJwtException e) {
-      logger.error("JWT token is unsupported: {}", e.getMessage());
-    } catch (IllegalArgumentException e) {
-      logger.error("JWT claims string is empty: {}", e.getMessage());
+        String token = Jwts.builder()
+                           .subject(userId.toString())
+                           .issuedAt(new Date())
+                           .expiration(new Date(System.currentTimeMillis() + 3600000))
+                           .signWith(secretKey)
+                           .compact();
+        System.out.println("GENERATED TOKEN: " + token);
+        return token;
+    } catch (InvalidKeyException e) {
+        System.out.println("Inavlid Key for JWT signing: " + e.getMessage());
+        throw new SecurityException("Unable to generate token: Invalid signing key", e);
+    } catch (JwtException e) {
+        System.out.println("Error generation JWT Token" + e.getMessage());
+        throw new RuntimeException("Failed to generate authentication token", e);
     }
-    return false;
   }
 
-  // #TODO: Extract user
-  public void extractUser() {}
+    public boolean validateJwtToken(String token) {
+    try {
+        Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token);
+        return true;
+    } catch (MalformedJwtException e) {
+        logger.error("Invalid JWT token: {}", e.getMessage());
+    } catch (ExpiredJwtException e) {
+        logger.error("JWT token has expired: {}", e.getMessage());
+    } catch (UnsupportedJwtException e) {
+        logger.error("JWT token is unsupported: {}", e.getMessage());
+    } catch (IllegalArgumentException e) {
+        logger.error("JWT claims string is empty: {}", e.getMessage());
+    }
+        return false;
+    }
 }
