@@ -1,10 +1,13 @@
 package com.jobtracker.config;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -19,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 /**
  * Spring Security configuration
  * This class defines authentication and authorization rules for HTTP requests.
- */
+*/
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -27,7 +30,7 @@ public class SecurityConfig {
   /**
    * Creates a password encoder bean for secure password storage
    * @return A password encoder that uses the BCrypt strong hashing function
-   */
+  */
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
@@ -46,13 +49,13 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-        .formLogin(form -> form.loginPage("/login").permitAll())
+        .formLogin(withDefaults())
         .authorizeHttpRequests(authorize -> authorize
                               .requestMatchers("/api/auth/**").permitAll()
                               .requestMatchers("/api/test/**").permitAll()
                               .requestMatchers("/register").permitAll()
                               .anyRequest().permitAll()
-                              );
+                              ).cors(Customizer.withDefaults());
 
     return http.build();
   }
@@ -64,10 +67,11 @@ public class SecurityConfig {
    * @param userDetailsService Service to retrieve user details
    * @param passwordEncoder Encoder to verify passwords
    * @return Configured authentication manager
-   */
+  */
   @Bean
   public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
     DaoAuthenticationProvider daoAuthentication = new DaoAuthenticationProvider();
+    //UserDetails userDetails = userDetailsService.loadUserByUsername(username);
     daoAuthentication.setUserDetailsService(userDetailsService);
     daoAuthentication.setPasswordEncoder(passwordEncoder);
     return new ProviderManager(daoAuthentication);
@@ -78,7 +82,7 @@ public class SecurityConfig {
    * It's indented for development/testing purposes.
    * Will be replaced with a database-backed user details service.
    * @return
-   */
+  */
   @Bean
   public UserDetailsService UserDetailsService() {
     PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
