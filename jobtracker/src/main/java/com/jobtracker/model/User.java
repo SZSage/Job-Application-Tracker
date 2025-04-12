@@ -17,7 +17,7 @@ public class User {
     this.email = email;
   }
 
-  // Constructor for inserting new user
+  // For inserting new user
   public User(String email, String password) {
     this.email = email;
     this.password = password;
@@ -29,8 +29,15 @@ public class User {
     this.role = role;
   }
 
-  // Constructor for fetching user info
-  public User(UUID userId, String email, String password, LocalDateTime createdAt, String role) {
+  // Fetching user info
+  public User(UUID userId, String email, LocalDateTime createdAt, String role) {
+    this.userId = userId;
+    this.email = email;
+    this.createdAt = createdAt;
+    this.role = "USER";
+  }
+
+  public User(UUID userId, String email, String password,LocalDateTime createdAt, String role) {
     this.userId = userId;
     this.email = email;
     this.password = password;
