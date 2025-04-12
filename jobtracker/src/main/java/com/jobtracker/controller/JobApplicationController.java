@@ -30,9 +30,10 @@ public class JobApplicationController {
         return jobApplicationService.addJobApplication(jobApplications);
     }
 
-    @GetMapping("/api/getApplications")
-    public Iterable<JobApplications> listApplications() {
-        return jobApplicationService.getJobApplications();
+    @GetMapping("/api/getApplications/{userId}")
+    public ResponseEntity<?> listApplications(@PathVariable UUID userId) {
+        Iterable<JobApplications> applications = jobApplicationService.getJobApplications(userId);
+        return ResponseEntity.ok(applications);
     }
 
     @PatchMapping("/api/modifyApplication/{jobId}")

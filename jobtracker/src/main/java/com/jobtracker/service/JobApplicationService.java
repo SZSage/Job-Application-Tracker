@@ -34,8 +34,8 @@ public class JobApplicationService {
         return "Job application added!";
     }
 
-    public Iterable<JobApplications> getJobApplications() {
-        return jobApplicationRepository.getApplications();
+    public Iterable<JobApplications> getJobApplications(UUID userId) {
+        return jobApplicationRepository.getApplications(userId);
     }
 
     public Map<String, String> convertToJson(JobApplications updatedFields) {

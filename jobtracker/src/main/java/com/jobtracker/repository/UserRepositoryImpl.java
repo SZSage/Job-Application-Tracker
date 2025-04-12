@@ -11,30 +11,34 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository {
-  private UserDao userDao;
+    private UserDao userDao;
 
-  @Autowired
-  public UserRepositoryImpl(UserDao userDao) {
-    this.userDao = userDao;
-  }
+    @Autowired
+    public UserRepositoryImpl(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
-  public User addUser(User user) {
-    User userInfo = userDao.createUser(user.getEmail(), user.getPassword(), user.getUserId());
-    return userInfo;
-  }
+    public User addUser(User user) {
+        User userInfo = userDao.createUser(user.getEmail(), user.getPassword(), user.getUserId());
+        return userInfo;
+    }
 
-  public List<User> fetchAllUsers() {
-    List<User> userInfo = userDao.getAllUsers();
-    return userInfo;
-  }
+    public List<User> fetchAllUsers() {
+        List<User> userInfo = userDao.getAllUsers();
+        return userInfo;
+    }
 
-  public int removeUser(UUID userId) {
-    return userDao.deleteUserById(userId);
-  }
+    public int removeUser(UUID userId) {
+        return userDao.deleteUserById(userId);
+    }
 
-  public User checkLogin(String email) {
-    return userDao.userLoginCheck(email);
-  }
+    public User checkLogin(String email) {
+        return userDao.userLoginCheck(email);
+    }
+
+    public UUID getUserId(String email) {
+        return userDao.getUserId(email);
+    }
 
   // TODO: updateUser
 }

@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository {
-  User addUser(User user);
-  List<User> fetchAllUsers();
-  int removeUser(UUID userId);
-  User checkLogin(String email);
+    User addUser(User user);
+    List<User> fetchAllUsers();
+    int removeUser(UUID userId);
+    User checkLogin(String email);
+    UUID getUserId(String email);
   // getUser
   // updateUser
 }
