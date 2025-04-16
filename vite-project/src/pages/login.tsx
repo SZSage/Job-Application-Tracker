@@ -5,6 +5,8 @@ import { userLogin } from "@/api/applications-api"
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
+import { useState, useEffect } from 'react';
+
 // Form validation
 const schema = yup.object().shape({
     email: yup.string().email().required("Email is required"),
@@ -19,6 +21,12 @@ interface loginForm {
   password: string
 }
 
+function SessionStorage() {
+  const [name, setName] = useState(() => {
+    return sessionStorage.getItem('token') || '';
+  });
+}
+
 export default function Login() {
 
   const { register, handleSubmit, formState: { errors, isSubmitted } } = useForm<loginForm>({
@@ -27,11 +35,19 @@ export default function Login() {
   })
   let navigate = useNavigate()
 
-  const onSubmit: SubmitHandler<loginForm> = (data: any) => {
-    console.log("Data: " + data)
+  // TODO: Request a new token shortly before expiring
+  // TODO: Check if token is expired before using it
+
+  const onSubmit: SubmitHandler<loginForm> = (response: any) => {
+    console.log("Data: " + response)
     // api call
-    userLogin(data).then(data => {
-      console.log("Sign-in successful. Redirecting to dashboard.", data)
+    userLogin(response).then(response => {
+      // extract token from response and add to sessionStorage
+      const token = response.token;
+      const userId = response.userId;
+      sessionStorage.setItem("token", token)
+      sessionStorage.setItem("userId", userId)
+      console.log("Sign-in successful. Redirecting to dashboard.", response)
       navigate("/dashboard")
     })
   }

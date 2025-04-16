@@ -4,7 +4,6 @@ import { useNavigate } from "react-router";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 import { registerUser } from "@/api/applications-api"
-import Login from "@/src/types/types"
 
 
 const schema = yup.object().shape({
@@ -31,11 +30,11 @@ export default function Register() {
     mode: "onSubmit"
   });
   let navigate = useNavigate()
-  
+
   const onSubmit: SubmitHandler<userForm> = (data: any) => {
     console.log("Form submitted: ", data);
 
-    // api call here
+    // api call here and redirect to login page
     registerUser(data)
       .then(data => {
         console.log("User registration info added: ", data)
