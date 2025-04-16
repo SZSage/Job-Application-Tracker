@@ -1,8 +1,8 @@
-import { apiGet, apiAdd } from "./api-client";
+import { apiGet, apiAdd, apiGetAuth } from "./api-client";
 import { Register, LoginCredentials, AuthResponse , Applications }  from "@/types/types";
 
 export async function getApplications(): Promise<Applications[]> {
-  return apiGet<Applications[]>("getApplications");
+  return apiGet<Applications[]>("getApplications/");
 }
 
 export async function addApplication(data: any): Promise<Applications[]> {
