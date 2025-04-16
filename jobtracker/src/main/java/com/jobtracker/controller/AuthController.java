@@ -55,7 +55,8 @@ public class AuthController {
             checkLogin.getUser().getUserId(),
             checkLogin.getUser().getEmail(),
             "USER",
-            checkLogin.getUser().getCreatedAt()
+            checkLogin.getUser().getCreatedAt(),
+            checkLogin.getToken()
         );
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(authResponse);
@@ -65,6 +66,6 @@ public class AuthController {
 
     public record LoginRequest(String email, String password) {}
 
-    public record AuthResponse(UUID userId, String email, String role, LocalDateTime createdAt) {}
+    public record AuthResponse(UUID userId, String email, String role, LocalDateTime createdAt, String token) {}
 
 }

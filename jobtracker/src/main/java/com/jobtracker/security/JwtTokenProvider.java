@@ -57,7 +57,6 @@ public class JwtTokenProvider {
                            .expiration(new Date(System.currentTimeMillis() + 3600000))
                            .signWith(secretKey)
                            .compact();
-        System.out.println("GENERATED TOKEN: " + token);
         return token;
     } catch (InvalidKeyException e) {
         System.out.println("Inavlid Key for JWT signing: " + e.getMessage());

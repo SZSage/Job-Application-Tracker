@@ -67,7 +67,7 @@ public class UserService {
         return new AuthenticationResponse(user, token);
     }
 
-    // TODO: 
+    // TODO:
 
     public String tokenGenerator(UUID userId) {
         String token = jwtTokenProvider.genJwtToken(userId);

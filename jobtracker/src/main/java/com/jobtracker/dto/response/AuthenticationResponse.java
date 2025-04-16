@@ -12,7 +12,6 @@ public class AuthenticationResponse {
         this.token = token;
     }
 
-
     public void setUser(User user) {
         this.user = user;
     }

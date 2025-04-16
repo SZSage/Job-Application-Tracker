@@ -28,13 +28,13 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc(addFilters = false)
 public class AuthControllerTest {
 
-  @Autowired private MockMvc mockMvc;
-  @MockBean private UserService userService;
-  @Autowired private ObjectMapper objectMapper; // For JSON conversion
+    @Autowired private MockMvc mockMvc;
+    @MockBean private UserService userService;
+    @Autowired private ObjectMapper objectMapper; // For JSON conversion
 
-  @Test
-  @DisplayName("Should register user successfully")
-  void testUserRegister() throws Exception {
+    @Test
+    @DisplayName("Should register user successfully")
+    void testUserRegister() throws Exception {
     UUID userId = UUID.randomUUID();
     LocalDateTime localDateTime = LocalDateTime.now();
     UserRegistrationDTO userRegistrationDTO = new UserRegistrationDTO();
@@ -50,13 +50,15 @@ public class AuthControllerTest {
 
     // Mock HTTP request
     mockMvc.perform(
-      post("/api/auth/register")
+        post("/api/auth/register")
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(userRegistrationDTO)))
-      .andExpect(status().isCreated())
-      .andExpect(jsonPath("$.userId").value(userId.toString()))
-      .andExpect(jsonPath("$.email").exists())
-      .andExpect(jsonPath("$.role").value("USER"))
-      .andExpect(jsonPath("$.createdAt").value(localDateTime.toString()));
-  }
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.userId").value(userId.toString()))
+        .andExpect(jsonPath("$.email").exists())
+        .andExpect(jsonPath("$.role").value("USER"))
+        .andExpect(jsonPath("$.createdAt").value(localDateTime.toString()));
+    }
+
+    // TODO: Test User Login
 }
