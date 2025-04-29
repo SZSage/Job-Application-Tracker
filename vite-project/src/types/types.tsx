@@ -18,6 +18,7 @@ export interface Login {
 }
 
 export interface AuthResponse {
+  userId: string,
   token: string;
   tokenType: string;
   expirationTime: number;
@@ -32,11 +33,21 @@ export interface Applications {
     companyName: string,
     salary: number,
     location: string,
+    jobType: string,
     statusId: ApplicationStatus,
-    userId: string
+    userId: string,
 }
 
-export type ApplicationStatus = "applied" | "interview" | "offer" | "rejected";
+export type ApplicationStatus =
+  "Saved" |
+  "Applied" |
+  "Screen" |
+  "Interviewing" |
+  "Offer" |
+  "Withdrawn" |
+  "Rejected" |
+  "Ghosted" |
+  "Accepted"
 
 export interface Users {
   userId: String,
