@@ -36,7 +36,7 @@ export function AppSidebar({
       collapsible="icon"
       variant="sidebar"
       className={`bg-transition-all duration-300 ease-out ${
-        state === "collapsed" ? "w-[3.5em]" : "w-[16rem]"
+        state === "collapsed" ? "w-[3.5em]" : "w-[12rem]"
       }`}
     >
       <SidebarContent className="p-2 pt-0 bg-sidebar/50 backdrop-blur-md">
