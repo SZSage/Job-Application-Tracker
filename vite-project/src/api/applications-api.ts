@@ -1,4 +1,4 @@
-import { apiGet, apiAdd, apiGetAuth } from "./api-client";
+import { apiGet, apiAddApplication, apiPostAuth } from "./api-client";
 import { Register, LoginCredentials, AuthResponse , Applications }  from "@/types/types";
 
 export async function getApplications(): Promise<Applications[]> {
@@ -6,14 +6,14 @@ export async function getApplications(): Promise<Applications[]> {
 }
 
 export async function addApplication(data: any): Promise<Applications[]> {
-    return apiAdd<Applications[]>("addApplication", data);
+    return apiAddApplication<Applications[]>("addApplication", data);
 }
 
 export async function registerUser(data: any): Promise<Register> {
-    return apiAdd<Register>("register", data);
+    return apiAddApplication<Register>("register", data);
 }
 
 export async function userLogin(credentials: LoginCredentials): Promise<AuthResponse> {
-    return apiAdd<AuthResponse>("login", credentials);
+    return apiPostAuth<AuthResponse>("login", credentials);
 }
 
