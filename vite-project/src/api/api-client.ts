@@ -1,9 +1,7 @@
 const API_URL = "http://localhost:8080/jobApplications/api/";
 
-const user_register_URL = "http://localhost:8080/api/auth/"
 const user_login_URL = "http://localhost:8080/api/auth/"
 
-const user_register_test = "http://localhost:8080/api/auth/"
 
 // A general API handler that checks for HTTP responses
 async function apiHandler(response: Response) {
@@ -28,13 +26,24 @@ export async function apiGet<T>(endpoint: string): Promise<T> {
     return apiHandler(response);
 }
 
-export async function apiAdd<T>(endpoint: string, data: any): Promise<T> {
-    const response = await fetch(`${user_register_test}${endpoint}`, {
+export async function apiAddApplication<T>(endpoint: string, data: any): Promise<T> {
+    const response = await fetch(`${API_URL}${endpoint}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(data)
+    });
+    return apiHandler(response);
+}
+
+export async function apiPostAuth<T>(endpoint: string, data: any): Promise<T> {
+    const response = await fetch(`${user_login_URL}${endpoint}`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data)
     });
     return apiHandler(response);
 }
@@ -49,10 +58,10 @@ function retrieveUserId(): String | null {
     return userId;
 }
 
-// TODO: Authenticatied GET request function that includes the token in headers
+// Authenticatied GET request function that includes the token in headers
 // Retrieve token from sessionStorage
 // Include it in the authorization header using Bearer scheme
-export async function apiGetAuth(endpoint: string): Promise<T> {
+export async function apiGetAuth<T>(endpoint: string): Promise<T> {
     const sessionToken = retrieveToken();
     console.log("FETCHED TOKEN: " + sessionToken);
     const response = await fetch(`${user_login_URL}${endpoint}`, {

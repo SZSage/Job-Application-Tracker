@@ -1,5 +1,5 @@
 import Dashboard from "@/features/dashboard";
-import Applications from "@/features/applications";
+import Applications from "@/features/applications/applications";
 import Settings from "@/features/settings";
 
 export function PageContent({ activePage }: { activePage: string }) {
