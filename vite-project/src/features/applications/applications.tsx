@@ -26,7 +26,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { q } from "node_modules/react-router/dist/development/fog-of-war-Da8gpnoZ.d.mts";
 
 export default function Applications() {
   const [ totalCount, setTotalCount ] = useState<number>(0);
@@ -64,7 +63,11 @@ export function TabBar() {
   );
 }
 
-export function JobSelection({ selectedJobs }) {
+interface JobSelectionProps {
+  selectedJobs: number;
+}
+
+export function JobSelection({ selectedJobs }: JobSelectionProps) {
   return (
     <div className="flex items-center gap-2">
       <Checkbox />
@@ -72,6 +75,7 @@ export function JobSelection({ selectedJobs }) {
     </div>
   )
 }
+
 
 export function NewAppList({ setJobSelect, setTotalCount }) {
   const [applications, setApplications] = useState<Applications[]>([]);
@@ -83,33 +87,24 @@ export function NewAppList({ setJobSelect, setTotalCount }) {
     status: number
   };
 
-  const handleCheckBoxCount = () => {
-    const selectCount = Object.values(jobData).filter(job => job.checked).length;
-    return selectCount;
-  }
-
-  /* State management */
-  const updateSelectCount = (count: number) => {
-    setJobSelect(count);
-  }
 
   /* State Management: Sets checked status for each jobId when called */
   const handleCheckBox = (newCheckedState: boolean, jobId: string) => {
-    setJobData(prev => {
-      const newState = {
-        ...prev,
-        [jobId]: {
-          ...prev[jobId],
-          checked: newCheckedState
-        }
+    const updatedJobData = {
+      ...jobData,
+      [jobId]: {
+        ...jobData[jobId],
+        checked: newCheckedState
       }
+    };
+    setJobData(updatedJobData)
+    const wasChecked = jobData[jobId]?.checked || false;
 
-      const checkCount = handleCheckBoxCount();
-      updateSelectCount(checkCount);
-      return newState
-    }),
-    console.log("new checked state: " + newCheckedState);
-  }
+    // Update count based on checked applications
+    if (wasChecked != newCheckedState) {
+      setJobSelect((prevCount: number) => newCheckedState ? prevCount + 1 : prevCount - 1);
+    }
+  };
 
   /* Get applications and set each one to keep track of checked status */
   useEffect(() => {
