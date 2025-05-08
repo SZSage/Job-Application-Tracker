@@ -5,8 +5,7 @@ import { AddApplication } from "./addApplication.tsx";
 import type { Applications } from "@/types/types";
 import { getApplications, addApplication } from "@/api/applications-api";
 import { MapPin, Building, DollarSign } from "lucide-react";
-import { ActiveButton, ExportCsvButton } from "@/components/ui/button-outline";
-import { Button } from "@/components/ui/button";
+import { ActiveButton, ExportCsvButton, DeleteButton } from "@/components/ui/button-outline";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface jobInfo {
@@ -27,6 +26,7 @@ interface Action {
 
 interface JobSelectionProps {
   selectedJobs: number;
+  setJobSelect: React.Dispatch<React.SetStateAction<number>>;
   isVisible: boolean;
   setIsVisible: (value: boolean) => void;
   jobData: Record<string, jobInfo>;
@@ -41,12 +41,21 @@ interface ApplicationListProps {
   setTotalCount: React.Dispatch<React.SetStateAction<number>>;
 }
 
+interface VisibleHandlerProps {
+  isVisible: boolean;
+  setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
 export default function Applications() {
   const [totalCount, setTotalCount] = useState<number>(0);
   const [jobSelect, setJobSelect] = useState<number>(0);
-  const [isVisible, setIsVisible] = useState<boolean>(true);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const [jobData, setJobData] = useState<Record<string, jobInfo>>({});
-  const [state, dispatch] = useReducer(reducer, { count: 0, error: null });
+
+  // This will run whenever jobSelect changes
+  useEffect(() => {
+    setIsVisible(jobSelect > 0);
+  }, [jobSelect]);
 
   function reducer(state: State, action: Action) {
     switch (action.type) {
@@ -70,6 +79,7 @@ export default function Applications() {
         isVisible={isVisible}
         setIsVisible={setIsVisible}
         selectedJobs={jobSelect}
+        setJobSelect={setJobSelect}
         jobData={jobData}
         setJobData={setJobData}
         totalCount={totalCount}
@@ -84,13 +94,13 @@ export default function Applications() {
   );
 }
 
-function HiddenDelete({ isVisible, setIsVisible }) {
+function HiddenDelete({ isVisible, setIsVisible }: VisibleHandlerProps) {
   return (
     <div>
       {isVisible ? (
-        <div></div>
+        <DeleteButton></DeleteButton>
       ) : (
-        <Button onClick={() => setIsVisible(!isVisible)}>Delete</Button>
+        <div></div>
       )}
     </div>
   );
@@ -122,6 +132,7 @@ function JobSelection({
   isVisible,
   setIsVisible,
   selectedJobs,
+  setJobSelect,
   totalCount,
 }: JobSelectionProps) {
   const [allCheckedChange, setAllCheckedChange] = useState<boolean>(false);
@@ -136,6 +147,7 @@ function JobSelection({
     );
     setJobData(updatedJobData);
     console.log("updatedJobData", updatedJobData);
+    setJobSelect(newCheckedState ? totalCount : 0);
   };
 
   const handleAllCheckedChange = (newState: boolean) => {
@@ -148,10 +160,10 @@ function JobSelection({
       {/* Direct mapping to onCheckedChange instead of a separate handler to keep component
         simpler since this is the only checkbox that affects all items at once */}
       <Checkbox onCheckedChange={handleAllCheckedChange} />
-      {allCheckedChange === false ? (
+      {allCheckedChange === false || selectedJobs ?  (
         <h3> {selectedJobs} JOBS SELECTED</h3>
       ) : (
-        <h3>{totalCount} JOBS SELECTED</h3>
+        <h3>{totalCount} ALL JOBS SELECTED</h3>
       )}
       <HiddenDelete
         isVisible={isVisible}
