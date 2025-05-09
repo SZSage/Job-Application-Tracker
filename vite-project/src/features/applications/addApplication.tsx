@@ -45,7 +45,7 @@ export function AddApplication() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">
+        <Button className="font-bold">
           <Plus />
           Add Application
         </Button>
@@ -95,7 +95,7 @@ export function AddApplication() {
           <DialogFooter>
             <Button
               type="submit"
-              className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md"
+              className="font-bold rounded-lg"
             >
               Save changes
             </Button>

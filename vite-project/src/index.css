@@ -6,39 +6,39 @@
 @config "../tailwind.config.js";
 @layer base {
 :root {
-  --background: 208 100% 97.06%;
-  --foreground: 216.92 19.12% 26.67%;
-  --card: 0 0% 100%;
-  --card-foreground: 216.92 19.12% 26.67%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 216.92 19.12% 26.67%;
-  --primary: 142.09 70.56% 45.29%;
+  --background: 44.00 42.86% 93.14%;
+  --foreground: 28.57 16.54% 24.90%;
+  --card: 42.00 100.00% 98.04%;
+  --card-foreground: 28.57 16.54% 24.90%;
+  --popover: 42.00 100.00% 98.04%;
+  --popover-foreground: 28.57 16.54% 24.90%;
+  --primary: 30.00 33.87% 48.63%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 204.00 93.75% 93.73%;
-  --secondary-foreground: 215 13.79% 34.12%;
-  --muted: 220.00 14.29% 95.88%;
-  --muted-foreground: 220 8.94% 46.08%;
-  --accent: 149.27 80.39% 90.00%;
-  --accent-foreground: 216.92 19.12% 26.67%;
-  --destructive: 0 84.24% 60.20%;
+  --secondary: 40.65 34.83% 82.55%;
+  --secondary-foreground: 28.97 18.71% 30.39%;
+  --muted: 39 34.48% 88.63%;
+  --muted-foreground: 32.31 18.48% 41.37%;
+  --accent: 42.86 32.81% 74.90%;
+  --accent-foreground: 28.57 16.54% 24.90%;
+  --destructive: 9.84 54.70% 45.88%;
   --destructive-foreground: 0 0% 100%;
-  --border: 220 13.04% 90.98%;
-  --input: 220 13.04% 90.98%;
-  --ring: 142.09 70.56% 45.29%;
-  --chart-1: 142.09 70.56% 45.29%;
-  --chart-2: 160.12 84.08% 39.41%;
-  --chart-3: 161.38 93.55% 30.39%;
-  --chart-4: 162.93 93.55% 24.31%;
-  --chart-5: 163.15 88.12% 19.80%;
-  --sidebar: 204.00 93.75% 93.73%;
-  --sidebar-foreground: 216.92 19.12% 26.67%;
-  --sidebar-primary: 142.09 70.56% 45.29%;
+  --border: 40.00 31.43% 79.41%;
+  --input: 40.00 31.43% 79.41%;
+  --ring: 30.00 33.87% 48.63%;
+  --chart-1: 30.00 33.87% 48.63%;
+  --chart-2: 31.38 29.95% 42.55%;
+  --chart-3: 33.68 32.95% 33.92%;
+  --chart-4: 29.12 30.91% 56.86%;
+  --chart-5: 30 33.68% 62.75%;
+  --sidebar: 39 34.48% 88.63%;
+  --sidebar-foreground: 28.57 16.54% 24.90%;
+  --sidebar-primary: 30.00 33.87% 48.63%;
   --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 149.27 80.39% 90.00%;
-  --sidebar-accent-foreground: 216.92 19.12% 26.67%;
-  --sidebar-border: 220 13.04% 90.98%;
-  --sidebar-ring: 142.09 70.56% 45.29%;
-  --radius: 0.5rem;
+  --sidebar-accent: 42.86 32.81% 74.90%;
+  --sidebar-accent-foreground: 28.57 16.54% 24.90%;
+  --sidebar-border: 40.00 31.43% 79.41%;
+  --sidebar-ring: 30.00 33.87% 48.63%;
+  --radius: 0.975rem;
   --shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
   --shadow-sm: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 1px 2px -2px hsl(0 0% 0% / 0.10);
@@ -82,7 +82,7 @@
   --sidebar-accent-foreground: 240 5.03% 64.90%;
   --sidebar-border: 215 13.79% 34.12%;
   --sidebar-ring: 158.11 64.37% 51.57%;
-  --radius: 0.5rem;
+  --radius: 0.975rem;
   --shadow-2xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
   --shadow-xs: 0px 4px 8px -1px hsl(0 0% 0% / 0.05);
   --shadow-sm: 0px 4px 8px -1px hsl(0 0% 0% / 0.10), 0px 1px 2px -2px hsl(0 0% 0% / 0.10);
@@ -110,4 +110,9 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+html, body, #root {
+  height: 100%;
+  min-height: 100%;
 }
