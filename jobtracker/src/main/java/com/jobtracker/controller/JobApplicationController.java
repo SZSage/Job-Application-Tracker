@@ -1,10 +1,14 @@
 package com.jobtracker.controller;
 import java.util.UUID;
 
+import com.jobtracker.dto.request.DeleteJobRequest;
 import com.jobtracker.model.JobApplications;
 import com.jobtracker.service.JobApplicationService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/jobApplications")
 public class JobApplicationController {
+    private static final Logger logger = LogManager.getLogger(JobApplicationController.class);
     private final JobApplicationService jobApplicationService;
 
     @Autowired
@@ -42,10 +47,21 @@ public class JobApplicationController {
         return ResponseEntity.ok(updated);
     }
 
-    // FIX: Should not pass in userId
+    // FIX: Should not pass in jobId in the API endpoint
     @DeleteMapping("/api/deleteApplication/{jobId}/{userId}")
     public int deleteAppication(@PathVariable UUID jobId, @PathVariable UUID userId) {
         return jobApplicationService.deleteApplication(jobId, userId);
+    }
+
+    // TODO: Delete multiple selected job applications
+    @DeleteMapping("/api/deleteApplication/{userId}")
+    public ResponseEntity<?> deleteApplications(@PathVariable UUID userId, @RequestBody DeleteJobRequest deleteJobRequest) {
+        logger.info("Delete request received for userId: " + userId);
+        logger.info("================DELETE JOB REQUEST===================" + deleteJobRequest.toString());
+        if (userId == null || deleteJobRequest == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("USER NOT FOUND");
+        }
+        return ResponseEntity.ok(jobApplicationService.deleteApplications(userId, deleteJobRequest.getJobsIds()));
     }
 
 }
