@@ -3,10 +3,14 @@ import { useState, useEffect, useReducer } from "react";
 import { DropDownMenuCheckboxes } from "./dropdownMenuCheckbox";
 import { AddApplication } from "./addApplication.tsx";
 import type { Applications } from "@/types/types";
-import { getApplications, addApplication } from "@/api/applications-api";
+import { getApplications, deleteApplications} from "@/api/applications-api";
 import { MapPin, Building, DollarSign } from "lucide-react";
 import { ActiveButton, ExportCsvButton, DeleteButton } from "@/components/ui/button-outline";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Card, CardHeader, CardFooter, CardTitle, CardAction, CardDescription, CardContent
+} from "@/components/ui/card";
+import { DeleteApplications } from "./deleteApplications.tsx";
 
 interface jobInfo {
   checked: boolean;
@@ -98,7 +102,7 @@ function HiddenDelete({ isVisible, setIsVisible }: VisibleHandlerProps) {
   return (
     <div>
       {isVisible ? (
-        <DeleteButton></DeleteButton>
+        <DeleteApplications></DeleteApplications>
       ) : (
         <div></div>
       )}
@@ -126,15 +130,7 @@ function TabBar() {
   );
 }
 
-function JobSelection({
-  jobData,
-  setJobData,
-  isVisible,
-  setIsVisible,
-  selectedJobs,
-  setJobSelect,
-  totalCount,
-}: JobSelectionProps) {
+function JobSelection({jobData, setJobData, isVisible, setIsVisible, selectedJobs, setJobSelect, totalCount }: JobSelectionProps) {
   const [allCheckedChange, setAllCheckedChange] = useState<boolean>(false);
   // Using a separate function to maintain the state update logic
   // which prevents inconsistent state updates across the component
@@ -156,7 +152,7 @@ function JobSelection({
   };
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 pb-4 pt-2">
       {/* Direct mapping to onCheckedChange instead of a separate handler to keep component
         simpler since this is the only checkbox that affects all items at once */}
       <Checkbox onCheckedChange={handleAllCheckedChange} />
@@ -199,6 +195,10 @@ function ApplicationList({
         newCheckedState ? prevCount + 1 : prevCount - 1,
       );
     }
+
+    if (newCheckedState) {
+      console.log("Job checked: ", jobId);
+    }
   };
 
   /* Get applications and set each one to keep track of checked status */
@@ -216,7 +216,7 @@ function ApplicationList({
         });
         setJobData(jobs);
         setApplications(applications);
-        console.log(jobs);
+        console.log("JOBS: " + JSON.stringify(jobs));
       })
       .catch((error) => console.error("Failed to fetch data: " + error));
   }, []);
@@ -227,10 +227,24 @@ function ApplicationList({
 
   return (
     <div className="flex flex-col w-full">
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter>
+      </Card>
+
       {applications.map((application) => (
         <div
           key={application.companyName}
-          className="flex relative justify-between items-center mt-4 w-full h-30 border-1 border-gray-600 rounded-lg shadow-2xl bg-card/70 backdrop-blur-xs pl-4 pr-4"
+          className="flex relative justify-between items-center mt-4 w-full h-30 border shadow-md bg-card pl-4 pr-4 rounded"
         >
           <div className="flex relative flex-col text-muted-foreground">
             <div key={application.jobId} className="flex gap-2 items-center">
