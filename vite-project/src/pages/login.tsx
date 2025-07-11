@@ -70,7 +70,7 @@ export default function Login() {
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-gray-300">Password</label>
-              <input
+              <input type="password"
                 {...register("password")}
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-1 focus:dark:border-sidebar-ring"
                 placeholder="password"

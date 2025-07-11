@@ -1,5 +1,6 @@
 package com.jobtracker.service;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -8,6 +9,8 @@ import com.google.gson.reflect.TypeToken;
 import com.jobtracker.model.JobApplications;
 import com.jobtracker.repository.JobApplicationRepository;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JobApplicationService {
 
+    private static final Logger logger = LogManager.getLogger(JobApplicationService.class);
     private final JobApplicationRepository jobApplicationRepository;
 
     @Autowired
@@ -36,6 +40,24 @@ public class JobApplicationService {
 
     public Iterable<JobApplications> getJobApplications(UUID userId) {
         return jobApplicationRepository.getApplications(userId);
+    }
+
+    public int deleteApplication(UUID jobId, UUID userId) {
+        int result = jobApplicationRepository.removeApplication(jobId, userId);
+        return result;
+    }
+
+    public int deleteApplications(UUID userId, List<UUID> jobIds) {
+        System.out.println("jobIds" + jobIds);
+        int result = jobApplicationRepository.removeApplications(userId, jobIds);
+        return result;
+    }
+
+    public JobApplications updateJobApplications(UUID jobId, JobApplications updatedFields) {
+        Map<String, String> json = convertToJson(updatedFields);
+        Map<String, String> result = filterNullValues(json);
+        extractAndSaveUpdates(result);
+        return null;
     }
 
     public Map<String, String> convertToJson(JobApplications updatedFields) {
@@ -89,18 +111,6 @@ public class JobApplicationService {
         }
 
         jobApplicationRepository.updateApplications(jobTitle, companyName, salary, location, statusId, jobId);
-    }
-
-    public JobApplications updateJobApplications(UUID jobId, JobApplications updatedFields) {
-        Map<String, String> json = convertToJson(updatedFields);
-        Map<String, String> result = filterNullValues(json);
-        extractAndSaveUpdates(result);
-        return null;
-    }
-
-    public int deleteApplication(UUID jobId, UUID userId) {
-        int result = jobApplicationRepository.removeApplication(jobId, userId);
-        return result;
     }
 
 }

@@ -6,16 +6,16 @@ export function ButtonOutline() {
 }
 
 export function ActiveButton() {
-  return <Button variant="animated" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-lg rounded-md">Active</Button>
+  return <Button variant="outline" className="font-bold">Active</Button>
 }
 
 export function ExportCsvButton() {
-  return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">Export CSV</Button>
+  return <Button variant="default" className="font-bold">Export CSV</Button>
 }
 
 export function ButtonIcon() {
   return (
-    <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">
+    <Button variant="default" className="font-bold">
       <Plus />
     Add Applications
   </Button>
@@ -23,6 +23,9 @@ export function ButtonIcon() {
 }
 
 export function SubmitButton() {
-  return <Button variant="outline" className="font-bold text-sky-300 bg-sky-500/20 backdrop-blur-md rounded-md">Submit</Button>
+  return <Button variant="outline" className="font-bold">Submit</Button>
 }
 
+export function DeleteButton() {
+  return <Button variant="outline" className="font-bold">Delete</Button>
+}

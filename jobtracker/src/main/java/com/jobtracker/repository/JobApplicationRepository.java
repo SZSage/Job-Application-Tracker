@@ -1,17 +1,22 @@
 package com.jobtracker.repository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.jobtracker.model.JobApplications;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class JobApplicationRepository {
+    private static final Logger logger = LogManager.getLogger(JobApplicationRepository.class);
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
  
@@ -88,6 +93,15 @@ public class JobApplicationRepository {
     public int removeApplication(UUID jobId, UUID userId) {
         String sql = "DELETE FROM job_applications WHERE job_id = ? AND user_id = ?";
         return jdbcTemplate.update(sql, jobId, userId);
+    }
+
+    public int removeApplications(UUID userId, List<UUID> jobIds) {
+        String sql = "DELETE FROM job_applications WHERE user_id = :userId AND job_id IN (:jobIds)";
+        Map<String, Object> mapping = new HashMap<>();
+        mapping.put("userId", userId);
+        mapping.put("jobIds", jobIds);
+        logger.info("==================MAPPING: " + mapping);
+        return namedParameterJdbcTemplate.update(sql, mapping);
     }
 
 }

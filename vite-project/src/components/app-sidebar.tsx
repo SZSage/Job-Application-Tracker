@@ -39,10 +39,10 @@ export function AppSidebar({
         state === "collapsed" ? "w-[3.5em]" : "w-[12rem]"
       }`}
     >
-      <SidebarContent className="p-2 pt-0 bg-sidebar/50 backdrop-blur-md">
+      <SidebarContent className="p-2 pt-0 bg-secondary/50 backdrop-blur-md">
         <SidebarGroup>
           <SidebarHeader
-            className="flex flex-row h-12 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-15 bg-transparent"
+            className="flex flex-row h-12 items-center gap-2 px-2 transition-all duration-300 ease-linearborder-b border-border group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-15"
             onClick={toggleSidebar}
             >
             <User2 className="size-5 shrink-0" />
@@ -55,9 +55,6 @@ export function AppSidebar({
 
           <Separator
             orientation="horizontal"
-            className={`mb-2 transition-all duration-300 ease-out ${
-              state === "collapsed" ? "w-8 mx-auto" : "w-full"
-            }`}
           />
 
           <SidebarGroupLabel>Sidebar Options</SidebarGroupLabel>

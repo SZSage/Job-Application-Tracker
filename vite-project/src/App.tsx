@@ -7,8 +7,8 @@ import Login from "./pages/login.tsx"
 
 export default function App() {
   return (
-    <div className="font-roboto min-h-screen h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <div className="kont-roboto min-h-screen h-full">
+      <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <Routes>
           <Route path="/register" element={<Register/>}/>
           <Route path="/login" element={<Login/>}/>

@@ -4,6 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import { ModeToggle } from "@/components/mode-toggle"
 import { useState, useEffect } from "react";
 import { PageContent } from "@/app/dashboard/page-content"
+import { Card } from "@/components/ui/card";
 
 export default function Page() {
   const { state, toggleSidebar } = useSidebar();
@@ -19,7 +20,7 @@ export default function Page() {
   }, [activePage]);
 
   return (
-    <div className="flex h-screen flex-auto border-b text-foreground bg-noise ">
+    <div className="flex h-screen flex-auto border-b text-foreground bg-noise">
       {/* Sidebar */}
       <AppSidebar activePage={activePage} setActivePage={setActivePage} />
 
@@ -30,7 +31,7 @@ export default function Page() {
         }`}
       >
         {/* Page header resize when sidebar is collapsed */}
-        <header className="sticky top-0 z-1000 flex h-12 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16 border-b border-border p-2 bg-sidebar/50 backdrop-blur-2xl">
+        <header className="sticky top-0 z-1000 flex h-12 items-center gap-2 transition-all ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-16 border-b border-border p-2 bg-secondary/50 backdrop-blur-md">
           <button onClick={toggleSidebar} className="p-2">
             <SidebarTrigger className="-ml-1" />
           </button>
