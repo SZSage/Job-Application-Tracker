@@ -7,26 +7,26 @@ interface jobInfo {
 }
 
 export interface Applications {
-    jobId: string,
-    jobTitle: string,
-    companyName: string,
-    salary: number,
-    location: string,
-    jobType: string,
-    statusId: ApplicationStatus,
-    userId: string,
+  jobId: string;
+  jobTitle: string;
+  companyName: string;
+  salary: number;
+  location: string;
+  jobType: string;
+  statusId: ApplicationStatus;
+  userId: string;
 }
 
 export type ApplicationStatus =
-  "Saved" |
-  "Applied" |
-  "Screen" |
-  "Interviewing" |
-  "Offer" |
-  "Withdrawn" |
-  "Rejected" |
-  "Ghosted" |
-  "Accepted"
+  | "Saved"
+  | "Applied"
+  | "Screen"
+  | "Interviewing"
+  | "Offer"
+  | "Withdrawn"
+  | "Rejected"
+  | "Ghosted"
+  | "Accepted";
 
 // Custom hook for fetching applications, job data, and calculating job count
 export function useApplications() {
@@ -34,24 +34,24 @@ export function useApplications() {
   const [jobData, setJobData] = useState<Record<string, jobInfo>>({});
   const [totalCount, setTotalCount] = useState<number>(0);
 
-    useEffect(() => {
-      getApplications().then((applications) => {
-        // Creating new object to store job data
-        const jobs: Record<string, jobInfo> = {};
-        applications.forEach((job) => {
-          jobs[job.jobId] = {
-            checked: false,
-            status: parseInt(job.statusId)
-          };
-        });
+  useEffect(() => {
+    getApplications().then((applications) => {
+      // Creating new object to store job data
+      const jobs: Record<string, jobInfo> = {};
+      applications.forEach((job) => {
+        jobs[job.jobId] = {
+          checked: false,
+          status: parseInt(job.statusId),
+        };
+      });
 
-        setJobData(jobs);
-        setApplications(applications);
-        setTotalCount(applications.length);
-        console.log("JOBS: " + JSON.stringify(jobs));
-      })
-    }, []);
+      setJobData(jobs);
+      setApplications(applications);
+      setTotalCount(applications.length);
+      console.log("JOBS: " + JSON.stringify(jobs));
+    })
+    .catch((error) => console.error("Failed to fetch data: " + error));
+  }, []);
 
   return { applications, jobData, totalCount };
 }
-
