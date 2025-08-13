@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export function useJobSelection() {
   const [jobSelect, setJobSelect] = useState<Set<string>>(new Set());
+  const [jobSelection, setJobSelection] = useState<string[]>([]);
 
   const handleJobSelect = (jobId: string) => {
     setJobSelect((prev) => {
@@ -20,6 +21,6 @@ export function useJobSelection() {
     setJobSelect(new Set())
   }
 
-  return { jobSelect, handleJobSelect, handleSelectAll, handleUncheck };
+  return { jobSelect, setJobSelect, handleJobSelect, handleSelectAll, handleUncheck };
 }
 

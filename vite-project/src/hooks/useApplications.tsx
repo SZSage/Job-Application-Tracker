@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { getApplications } from "@/api/applications-api";
+import { getApplications, addApplication } from "@/api/applications-api";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 
 export interface Applications {
   jobId: string;
@@ -8,8 +8,8 @@ export interface Applications {
   salary: number;
   location: string;
   jobType: string;
-  statusId: ApplicationStatus;
-  userId: string;
+  statusId: number;
+  userId: string | null;
 }
 
 export type ApplicationStatus =
@@ -23,18 +23,40 @@ export type ApplicationStatus =
   | "Ghosted"
   | "Accepted";
 
-// Custom hook for fetching applications, job data, and calculating job count
+
+export interface CreateApplicationRequest {
+  jobTitle: string;
+  companyName: string;
+  location: string;
+  salary: number;
+  statusId: number;
+  userId: string;
+}
+
 export function useApplications() {
-  const [applications, setApplications] = useState<Applications[]>([]);
-  const [totalCount, setTotalCount] = useState<number>(0);
+  const query = useQuery({
+    queryKey: ["applications"],
+    queryFn: getApplications,
+  });
 
-  useEffect(() => {
-    getApplications().then((applications) => {
-      setApplications(applications);
-      setTotalCount(applications.length);
-    })
-    .catch((error) => console.error("Failed to fetch data: ", error));
-  }, []);
+  return {
+    applications: query.data || [],
+    isLoading: query.isPending,
+    error: query.error,
+    totalCount: query.data?.length || 0,
+  };
+}
 
-  return { applications, totalCount };
+export const useAddApplications = () => {
+  const queryClient = useQueryClient();
+  const { mutateAsync: addJobMutation } = useMutation({
+    mutationFn: (addJobData: CreateApplicationRequest) => {
+      return addApplication(addJobData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["applications"] });
+    },
+  });
+
+  return { addJobMutation };
 }
