@@ -1,4 +1,3 @@
-import { deleteApplications } from "@/api/applications-api";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
 import { useJobMutations } from "@/hooks/useJobMutations";
@@ -10,6 +9,7 @@ import {
   DialogTrigger,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { ReactEventHandler } from "react";
 
 interface DeleteData {
   userId: string | null;
@@ -18,13 +18,13 @@ interface DeleteData {
 
 interface DeleteApplicationsProps {
   jobSelect: string[];
+  handleUncheck: any; // placeholder for now
 }
 
-/**
- * Component for deleting selected job applications
- * Shows confirmation dialog before performing bulk delete operation
+/*
+ * Component for deleting selected job applications. Shows confirmation dialog before performing bulk delete operation.
  */
-export function DeleteApplications({ jobSelect }: DeleteApplicationsProps) {
+export function DeleteApplications({ jobSelect, handleUncheck }: DeleteApplicationsProps) {
   const { deleteJobMutation } = useJobMutations();
   // Constructs delete payload and calls API
   const handleSubmit = async () => {
@@ -32,10 +32,10 @@ export function DeleteApplications({ jobSelect }: DeleteApplicationsProps) {
       userId: sessionStorage.getItem("userId"),
       jobIds: [...jobSelect], // Spread operator to avoid mutation of original array
     };
-
     try {
       const result = await deleteJobMutation(deleteData);
       console.log("Delete successful: ", result);
+      handleUncheck();
     } catch (error) {
       console.log("Failed to delete applications: ", error);
     }
