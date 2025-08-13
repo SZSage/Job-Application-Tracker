@@ -24,19 +24,20 @@ export default function Applications() {
 
   return (
     <div className="p-4">
-      <Header />
+      <ApplicationHeader />
       <div className="flex pb-2">{totalCount} TOTAL JOBS</div>
-      <TabBar />
+      <ApplicationTabBar />
       <div className="flex pb-2 pt-2 items-center gap-2">
+        {/* Handles checkbox and unchecks the "select all" when applications are deleted */}
         <Checkbox
-          onCheckedChange={(checked) =>
-            checked ? handleSelectAll(handleSelect) : handleUncheck()
-          }
+          checked={jobSelect.size === applications.length && applications.length > 0}
+          onCheckedChange={(checked) => checked ? handleSelectAll(handleSelect) : handleUncheck()}
         />
         {jobSelect.size} jobs selected
         {showButton && (
           <DeleteApplications
             jobSelect={jobSelect}
+            handleUncheck={handleUncheck}
           ></DeleteApplications>
         )}
       </div>
@@ -49,7 +50,7 @@ export default function Applications() {
   );
 }
 
-function Header() {
+function ApplicationHeader() {
   return (
     <div className="flex justify-between items-center mb-2">
       <h1 className="text-xl font-semibold">Your Job Tracker</h1>
@@ -57,7 +58,7 @@ function Header() {
   );
 }
 
-function TabBar() {
+function ApplicationTabBar() {
   return (
     <div className="flex justify-between mb-4">
       <ActiveButton />
